@@ -1,0 +1,11 @@
+{
+	"extraScripts": [
+		"cmPlugin.ts",
+		"cmUtils.ts",
+		"commands.ts",
+		"dialogs.ts",
+		"markdownItExtention.ts",
+		"settings.ts",
+		"tableUtils.ts"
+	]
+}
