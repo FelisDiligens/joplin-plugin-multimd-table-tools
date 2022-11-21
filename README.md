@@ -8,7 +8,7 @@
     </tr>
     <tr>
         <td rowspan="5" align="center">
-            <img src="https://upload.wikimedia.org/wikipedia/en/0/08/Joplin-icon.svg" width="64"><br>
+            <img src="./assets/joplin.svg" width="64"><br>
             <p>
                 <strong>Joplin Plugin</strong><br>
                 MultiMarkdown Table Tools
