@@ -3,14 +3,16 @@
 <table>
     <tr>
         <td colspan="3" align="center">
-            <span style="font-size: 16pt; font-weight: 600; text-align: center;">MultiMarkdown Table Tools</span>
+            <h3>MultiMarkdown Table Tools</h3>
         </td>
     </tr>
     <tr>
         <td rowspan="5" align="center">
             <img src="https://upload.wikimedia.org/wikipedia/en/0/08/Joplin-icon.svg" width="64"><br>
-            Joplin Plugin<br>
-            <span style="font-size: 10pt">MultiMarkdown Table Tools</span>
+            <p>
+                <strong>Joplin Plugin</strong><br>
+                MultiMarkdown Table Tools
+            </p>
         </td>
     </tr>
     <tr>
