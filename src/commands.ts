@@ -32,7 +32,7 @@ const commands : Command[] = [
             commandName: "createTable"
         },
         add: {
-            toContextMenu: false,
+            toContextMenu: true,
             toToolsMenu: true,
             asToolbarButton: true
         },
@@ -52,7 +52,7 @@ const commands : Command[] = [
             asToolbarButton: false
         },
         execute: editorExecCommand("formatTable")
-    },/*
+    },
     {
         name: "formatAllTables",
         label: "Format all tables",
@@ -62,12 +62,12 @@ const commands : Command[] = [
             commandName: "formatAllTables"
         },
         add: {
-            toContextMenu: false,
+            toContextMenu: true,
             toToolsMenu: true,
             asToolbarButton: false
         },
         execute: editorExecCommand("formatAllTables")
-    },*/
+    },
     {
         name: "minifyTable",
         label: "Minify table",
@@ -82,7 +82,7 @@ const commands : Command[] = [
             asToolbarButton: false
         },
         execute: editorExecCommand("minifyTable")
-    },/*
+    },
     {
         name: "minifyAllTables",
         label: "Minify all tables",
@@ -97,7 +97,7 @@ const commands : Command[] = [
             asToolbarButton: false
         },
         execute: editorExecCommand("minifyAllTables")
-    },*/
+    },
     {
         name: "convertSelectionToMarkdownTable",
         label: "Convert selection to Markdown table",
@@ -130,7 +130,7 @@ const commands : Command[] = [
     },
     {
         name: "tableAddRowAbove",
-        label: "Table (+↑): Add row above",
+        label: "Row (+): Add above ↑",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -145,7 +145,7 @@ const commands : Command[] = [
     },
     {
         name: "tableAddRowBelow",
-        label: "Table (+↓): Add row below ",
+        label: "Row (+): Add below ↓",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -160,7 +160,7 @@ const commands : Command[] = [
     },
     {
         name: "tableMoveRow",
-        label: "Table (↕): Move row",
+        label: "Row (↕): Move",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -175,7 +175,7 @@ const commands : Command[] = [
     },
     {
         name: "tableDeleteRow",
-        label: "Table (-): Delete row",
+        label: "Row (-): Delete",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -190,7 +190,7 @@ const commands : Command[] = [
     },
     {
         name: "tableAddColumnLeft",
-        label: "Table (+←): Add column left",
+        label: "Column (+): Add left ←",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -205,7 +205,7 @@ const commands : Command[] = [
     },
     {
         name: "tableAddColumnRight",
-        label: "Table (+→): Add column right",
+        label: "Column (+): Add right →",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -220,7 +220,7 @@ const commands : Command[] = [
     },
     {
         name: "tableMoveColumn",
-        label: "Table (↔): Move column",
+        label: "Column (↔): Move",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -235,7 +235,7 @@ const commands : Command[] = [
     },
     {
         name: "tableDeleteColumn",
-        label: "Table (-): Delete column",
+        label: "Column (-): Delete",
         iconName: null,
         accelerator: null,
         menuItem: {
@@ -259,14 +259,16 @@ export function registerAllCommands() {
             execute: command.execute
         });
 
-        if (command.add.toContextMenu)
+        if (command.add.toContextMenu) {
             if (command.accelerator !== null)
                 joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu, { accelerator: command.accelerator});
             else
                 joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu);
+        }
 
-        if (command.add.asToolbarButton)
+        if (command.add.asToolbarButton) {
             joplin.views.toolbarButtons.create(command.label, command.name, ToolbarButtonLocation.EditorToolbar);
+        }
     });
     
     joplin.views.menus.create(

@@ -3,16 +3,113 @@ import { Editor, Position } from 'CodeMirror';
 const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
 const captionRegex = /^(\[.+\]){1,2}$/;
 
+interface Range {
+    from: Position,
+    to: Position
+}
+
 function createPosition(line: number, ch: number): Position {
     return {line, ch};
 }
 
+function createRange(from: Position, to: Position): Range {
+    return {
+        from,
+        to
+    }
+}
+
+/** If paired with "await", it will block the thread for the duration of the given milliseconds. */
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function determineColumnIndex(line: string, ch: number): number {
+    let row = line.substring(0, ch).trim();
+    if (row.startsWith("|"))
+        row = row.substring(1);
+    let colIndex = 0;
+    let escape = false;
+    for (const ch of row) {
+        if (ch == "|" && !escape) {
+            colIndex++;
+        } else if (ch == "\\") {
+            escape = !escape;
+        }
+    }
+    return colIndex;
+}
+
 /**
- * Returns the range (line numbers and character numbers) of the table at the cursor. If there is no table at the cursor, it returns null.
+ * Searches the entire document for tables and returns a list of ranges.
  * @param cm The CodeMirror editor
- * @returns A range (Position[]) or null
+ * @param allowEmptyLine Whether it should ignore a single empty line (MultiMarkdown).
+ * @returns A list of every table's range within the document.
  */
-export function getRangeOfTable(cm: Editor) {
+export function getRangesOfAllTables(cm: Editor, allowEmptyLine: boolean): Range[] {
+    let ranges: Range[] = [];
+    const doc = cm.getDoc();
+    let cursor = { } as Position;
+
+    let tableStartLine = -1;
+    let tableEndLine = -1;
+    let insideTable = false;
+    let hasSeparator = false;
+    let rememberEmptyLine = false;
+    for (cursor.line = doc.firstLine(); cursor.line <= doc.lastLine(); cursor.line++) {
+        let line = cm.getLine(cursor.line).trim();
+
+        // Does line match criteria?
+        if (line.includes("|") || line.match(captionRegex)) {
+            if (!insideTable) {
+                tableStartLine = cursor.line;
+                insideTable = true;
+            }
+
+            tableEndLine = cursor.line;
+
+            if (line.match(separatorRegex))
+                hasSeparator = true;
+            
+        // Ignore a single empty line:
+        } else if (insideTable && line.trim() === "" && allowEmptyLine && !rememberEmptyLine) {
+            rememberEmptyLine = true;
+
+        // Stop once a line doesn't match criteria:
+        } else if (insideTable) {
+            // If the table has a separator and we have at least two lines, it's probably a valid table:
+            if (hasSeparator && tableEndLine - tableStartLine >= 1) {
+                ranges.push(createRange(
+                    createPosition(tableStartLine, 0),
+                    createPosition(tableEndLine, cm.getLine(tableEndLine).length)
+                ));
+            }
+
+            // Reset variables:
+            insideTable = false;
+            rememberEmptyLine = false;
+            hasSeparator = false;
+        }
+    }
+
+    // If table is at the end and hasn't been added:
+    if (insideTable && hasSeparator && tableEndLine - tableStartLine >= 1) {
+        ranges.push(createRange(
+            createPosition(tableStartLine, 0),
+            createPosition(tableEndLine, cm.getLine(tableEndLine).length)
+        ));
+    }
+
+    return ranges;
+}
+
+/**
+ * Returns the range (line numbers and character numbers) of the table and the selected row/column at the cursor. If there is no table at the cursor, it returns null.
+ * @param cm The CodeMirror editor
+ * @param allowEmptyLine Whether it should ignore a single empty line (MultiMarkdown).
+ * @returns \{ range, row, column \} or null
+ */
+export function getRangeOfTable(cm: Editor, allowEmptyLine: boolean): { range: Range, row: number, column: number} {
     const cursor = cm.getCursor();
     let hasSeparator = false;
 
@@ -32,7 +129,7 @@ export function getRangeOfTable(cm: Editor) {
             rowIndex++;
             rememberEmptyLine = false;
         // Ignore a single empty line:
-        } else if (line.trim() === "" && !rememberEmptyLine) {
+        } else if (line.trim() === "" && allowEmptyLine && !rememberEmptyLine) {
             startLine--; // Move up.
             rowIndex++;
             rememberEmptyLine = true;
@@ -76,45 +173,69 @@ export function getRangeOfTable(cm: Editor) {
     }
     endLine--; // Move back...
 
-    // Determine column:
-    let row = cm.getLine(cursor.line).substring(0, cursor.ch).trim();
-    if (row.startsWith("|"))
-        row = row.substring(1);
-    let colIndex = 0;
-    let escape = false;
-    for (const ch of row) {
-        if (ch == "|" && !escape) {
-            colIndex++;
-        } else if (ch == "\\") {
-            escape = !escape;
-        }
-    }
-
     if (hasSeparator)
         return {
-            "range": [
+            "range": createRange(
                 createPosition(startLine, 0),
                 createPosition(endLine, cm.getLine(endLine).length)
-            ],
+            ),
             "row": rowIndex,
-            "column": colIndex
+            "column": determineColumnIndex(cm.getLine(cursor.line), cursor.ch)
         };
     else
         return null;
 }
 
 
-export function replaceRangeFunc(context, callback) {
+export function replaceAllTablesFunc(context, callback): Function {
     return async function() {
         const settings = await context.postMessage({ name: 'getSettings' });
         const cursor = this.getCursor();
-        const selection = getRangeOfTable(this);
+        const ranges = getRangesOfAllTables(this, settings.selectedFormat == "multimd");
+        if (ranges.length > 0) {
+            let errors = [];
+            for (let range of ranges) {
+                try {
+                    const table = this.getRange(range.from, range.to);
+                    const result = await callback(table, settings);
+                    if (result)
+                        this.replaceRange(result, range.from, range.to);
+
+                    await sleep(50); // Yes, this is absolutely necessary, otherwise CodeMirror only replaces every second table for reasons beyond me.
+                }
+                catch (error) {
+                    errors.push(error);
+                }
+            }
+            this.setCursor(cursor);
+            if (errors.length > 0) {
+                await context.postMessage({
+                    name: 'alert',
+                    text: `${errors.length} errors occured while formatting tables: \n` + errors.reduce((pv, cv) => pv.message + ", \n" + cv.message)
+                });
+            }
+        }
+        else {
+            await context.postMessage({
+                name: 'alert',
+                text: 'No tables found in the document.'
+            });
+        }
+    };
+}
+
+
+export function replaceRangeFunc(context, callback): Function {
+    return async function() {
+        const settings = await context.postMessage({ name: 'getSettings' });
+        const cursor = this.getCursor();
+        const selection = getRangeOfTable(this, settings.selectedFormat == "multimd");
         if (selection !== null) {
             try {
-                const table = this.getRange(selection.range[0], selection.range[1]);
+                const table = this.getRange(selection.range.from, selection.range.to);
                 const result = await callback(table, selection, settings);
                 if (result)
-                this.replaceRange(result, selection.range[0], selection.range[1]);
+                this.replaceRange(result, selection.range.from, selection.range.to);
                 this.setCursor(cursor);
             }
             catch (error) {
@@ -133,7 +254,7 @@ export function replaceRangeFunc(context, callback) {
     };
 }
 
-export function replaceSelectionFunc(context, callback) {
+export function replaceSelectionFunc(context, callback): Function {
     return async function() {
         const settings = await context.postMessage({ name: 'getSettings' });
         const table: string = this.getSelection();

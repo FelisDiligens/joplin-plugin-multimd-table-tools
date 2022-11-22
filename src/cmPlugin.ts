@@ -1,6 +1,6 @@
 import { Table } from "md-table-tools";
 import { Editor, Position } from 'CodeMirror';
-import { replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
+import { replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getHTMLParser, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer } from "./tableUtils";
 
 module.exports = {
@@ -48,11 +48,11 @@ module.exports = {
                     const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
                     return getMarkdownRenderer(settings.selectedFormat, false).render(parsedTable);
                 }));
-                CodeMirror.defineExtension('formatAllTables', replaceRangeFunc(context, async (table, selection, settings) => {
+                CodeMirror.defineExtension('formatAllTables', replaceAllTablesFunc(context, async (table, settings) => {
                     const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
                     return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
                 }));
-                CodeMirror.defineExtension('minifyAllTables', replaceRangeFunc(context, async (table, selection, settings) => {
+                CodeMirror.defineExtension('minifyAllTables', replaceAllTablesFunc(context, async (table, settings) => {
                     const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
                     return getMarkdownRenderer(settings.selectedFormat, false).render(parsedTable);
                 }));
