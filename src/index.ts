@@ -24,7 +24,7 @@ joplin.plugins.register({
         
         await joplin.contentScripts.register(ContentScriptType.CodeMirrorPlugin, "MultiMarkdownTableTools", "./cmPlugin.js");
 
-        await registerAllCommands(settings.allowAddToToolbar, settings.allowAddToContextMenu);
+        await registerAllCommands(settings);
 
         if (settings.useMarkdownItExtension) {
             await joplin.contentScripts.register(

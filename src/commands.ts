@@ -325,7 +325,7 @@ const commands : Command[] = [
     }
 ];
 
-export function registerAllCommands(allowAddToToolbar: boolean, allowAddToContextMenu: boolean) {
+export function registerAllCommands(settings) {
     commands.forEach(command => {
         joplin.commands.register({
             name: command.name,
@@ -334,14 +334,14 @@ export function registerAllCommands(allowAddToToolbar: boolean, allowAddToContex
             execute: command.execute
         });
 
-        if (command.add.toContextMenu && allowAddToContextMenu) {
-            if (command.accelerator !== null)
+        if (command.add.toContextMenu && settings.allowAddToContextMenu) {
+            if (command.accelerator !== null && settings.allowHotkeys)
                 joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu, { accelerator: command.accelerator});
             else
                 joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu);
         }
 
-        if (command.add.asToolbarButton && allowAddToToolbar) {
+        if (command.add.asToolbarButton && settings.allowAddToToolbar) {
             joplin.views.toolbarButtons.create(command.label, command.name, ToolbarButtonLocation.EditorToolbar);
         }
     });

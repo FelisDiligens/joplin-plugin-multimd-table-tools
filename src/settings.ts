@@ -11,6 +11,7 @@ export async function getSettings() {
 		"useNativeDialogs": await joplin.settings.value('tableToolsDebugUseNativeDialogs'),
 		"allowAddToToolbar": await joplin.settings.value('tableToolsAddButtonsToToolbar'),
 		"allowAddToContextMenu": await joplin.settings.value('tableToolsAddCommandsToContextMenu'),
+		"allowHotkeys": await joplin.settings.value('tableToolsAllowHotkeys'),
 	}
 }
 
@@ -53,6 +54,13 @@ export async function registerAllSettings() {
 			type: SettingItemType.Bool,
 			value: true,
 			label: 'Add options to contextmenu',
+		},
+		['tableToolsAllowHotkeys']: {
+			public: true,
+			section: section,
+			type: SettingItemType.Bool,
+			value: true,
+			label: 'Enable hotkeys',
 		},
 		['tableToolsUseMarkdownItExtension']: {
 			public: true,
