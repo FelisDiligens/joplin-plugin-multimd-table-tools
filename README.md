@@ -80,6 +80,31 @@
 
 > TODO
 
+## 🐛 Known issues
+
+### Broken dialogs
+
+![](assets/broken-dialog.png)
+
+<details>
+<summary><em>(Click to see how it's supposed to look like...)</em></summary>
+
+![](assets/working-dialog.png)
+
+</details>
+
+Every now and then the plugin swallows up its dialogs. There doesn't seem to be anything I can do to fix this.  
+If that happens to you, click "Cancel" and try again.
+
+This is also why I use these dialogs instead, whenever possible:
+
+![](assets/native-dialog.png)
+
+### Only every second table gets formatted
+
+It could be that only every second table gets formatted, when you click `Format all tables`.  
+If that happens to you, click `Format all tables` twice or format each table with `Format table`.
+
 <!--
 ## ☕ I can haz coffee?
 
