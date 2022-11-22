@@ -247,6 +247,66 @@ const commands : Command[] = [
             asToolbarButton: false
         },
         execute: editorExecCommand("tableDeleteColumn")
+    },
+    {
+        name: "tableTextAlignLeft",
+        label: "Text: Align left ←",
+        iconName: null,
+        accelerator: null,
+        menuItem: {
+            commandName: "tableTextAlignLeft"
+        },
+        add: {
+            toContextMenu: false,
+            toToolsMenu: true,
+            asToolbarButton: false
+        },
+        execute: editorExecCommand("tableTextAlignLeft")
+    },
+    {
+        name: "tableTextAlignCenter",
+        label: "Text: Align center ↔",
+        iconName: null,
+        accelerator: null,
+        menuItem: {
+            commandName: "tableTextAlignCenter"
+        },
+        add: {
+            toContextMenu: false,
+            toToolsMenu: true,
+            asToolbarButton: false
+        },
+        execute: editorExecCommand("tableTextAlignCenter")
+    },
+    {
+        name: "tableTextAlignRight",
+        label: "Text: Align right →",
+        iconName: null,
+        accelerator: null,
+        menuItem: {
+            commandName: "tableTextAlignRight"
+        },
+        add: {
+            toContextMenu: false,
+            toToolsMenu: true,
+            asToolbarButton: false
+        },
+        execute: editorExecCommand("tableTextAlignRight")
+    },
+    {
+        name: "tableTextAlignClear",
+        label: "Text: Clear alignment",
+        iconName: null,
+        accelerator: null,
+        menuItem: {
+            commandName: "tableTextAlignClear"
+        },
+        add: {
+            toContextMenu: false,
+            toToolsMenu: true,
+            asToolbarButton: false
+        },
+        execute: editorExecCommand("tableTextAlignClear")
     }
 ];
 

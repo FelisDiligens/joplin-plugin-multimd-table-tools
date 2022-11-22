@@ -50,6 +50,7 @@
 - Create new tables with ease.
 - Format and minify Markdown tables.
 - Add, delete, and move table rows and columns.
+- Align text left, center, or right.
 - Convert between HTML and Markdown.
 - Choose MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
 - Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*

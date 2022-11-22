@@ -1,4 +1,4 @@
-import { Table } from "md-table-tools";
+import { Table, TextAlignment } from "md-table-tools";
 import { replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getHTMLParser, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer } from "./tableUtils";
 
@@ -142,6 +142,30 @@ module.exports = {
                         return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
                     }
                     return null;
+                }));
+                
+                /*
+                    Change text alignment:
+                */
+                CodeMirror.defineExtension('tableTextAlignLeft', replaceRangeFunc(context, async (table, selection, settings) => {
+                    const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
+                    parsedTable.getColumn(selection.column).textAlign = TextAlignment.left;
+                    return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                }));
+                CodeMirror.defineExtension('tableTextAlignCenter', replaceRangeFunc(context, async (table, selection, settings) => {
+                    const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
+                    parsedTable.getColumn(selection.column).textAlign = TextAlignment.center;
+                    return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                }));
+                CodeMirror.defineExtension('tableTextAlignRight', replaceRangeFunc(context, async (table, selection, settings) => {
+                    const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
+                    parsedTable.getColumn(selection.column).textAlign = TextAlignment.right;
+                    return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                }));
+                CodeMirror.defineExtension('tableTextAlignClear', replaceRangeFunc(context, async (table, selection, settings) => {
+                    const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
+                    parsedTable.getColumn(selection.column).textAlign = TextAlignment.default;
+                    return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
                 }));
 
                 /*
