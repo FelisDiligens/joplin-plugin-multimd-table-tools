@@ -10,7 +10,7 @@ interface Command {
     menuItem: MenuItem,
     add: {
         toContextMenu: boolean,
-        toToolsMenu: boolean, // Unused
+        toToolsMenu: string,
         asToolbarButton: boolean
     },
     execute: () => Promise<any>
@@ -33,7 +33,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: true,
-            toToolsMenu: true,
+            toToolsMenu: "tableTools",
             asToolbarButton: true
         },
         execute: editorExecCommand("createTable")
@@ -48,7 +48,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: true,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsFormat",
             asToolbarButton: false
         },
         execute: editorExecCommand("formatTable")
@@ -63,7 +63,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: true,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsFormat",
             asToolbarButton: false
         },
         execute: editorExecCommand("formatAllTables")
@@ -78,7 +78,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsFormat",
             asToolbarButton: false
         },
         execute: editorExecCommand("minifyTable")
@@ -93,7 +93,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsFormat",
             asToolbarButton: false
         },
         execute: editorExecCommand("minifyAllTables")
@@ -108,7 +108,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsConvert",
             asToolbarButton: false
         },
         execute: editorExecCommand("convertSelectionToMarkdownTable")
@@ -123,7 +123,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsConvert",
             asToolbarButton: false
         },
         execute: editorExecCommand("convertSelectionToHTMLTable")
@@ -138,7 +138,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsRow",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableAddRowAbove")
@@ -153,7 +153,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsRow",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableAddRowBelow")
@@ -168,7 +168,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsRow",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableMoveRow")
@@ -183,7 +183,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsRow",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableDeleteRow")
@@ -198,7 +198,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableAddColumnLeft")
@@ -213,7 +213,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableAddColumnRight")
@@ -228,7 +228,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableMoveColumn")
@@ -243,7 +243,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableDeleteColumn")
@@ -258,7 +258,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsText",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableTextAlignLeft")
@@ -273,7 +273,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsText",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableTextAlignCenter")
@@ -288,7 +288,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsText",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableTextAlignRight")
@@ -303,7 +303,7 @@ const commands : Command[] = [
         },
         add: {
             toContextMenu: false,
-            toToolsMenu: true,
+            toToolsMenu: "tableToolsText",
             asToolbarButton: false
         },
         execute: editorExecCommand("tableTextAlignClear")
@@ -334,6 +334,28 @@ export function registerAllCommands() {
     joplin.views.menus.create(
         "tableTools",
         "Table tools",
-        commands.map(command => command.menuItem),
+        [
+            ...commands.filter(command => command.add.toToolsMenu == "tableTools").map(command => command.menuItem),
+            {
+				label: 'Format',
+				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsFormat").map(command => command.menuItem)
+			},
+            {
+				label: 'Row',
+				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsRow").map(command => command.menuItem)
+			},
+            {
+				label: 'Column',
+				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsColumn").map(command => command.menuItem)
+			},
+            {
+				label: 'Text',
+				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsText").map(command => command.menuItem)
+			},
+            {
+				label: 'Convert',
+				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsConvert").map(command => command.menuItem)
+			},
+        ],
         MenuItemLocation.Tools);
 }
