@@ -51,7 +51,7 @@
 - Format and minify Markdown tables.
 - Add, delete, and move table rows and columns.
 - Align text left, center, or right.
-- Convert between HTML and Markdown.
+- Convert tables between HTML, Markdown, and CSV.
 - Choose MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
 - Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*
   - Allows you to place table captions below a table. See [this forum post](https://discourse.joplinapp.org/t/multimarkdown-table-captions-above-table-not-below/2819).

@@ -1,6 +1,6 @@
 import { Table, TextAlignment } from "md-table-tools";
 import { replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
-import { getHTMLParser, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer } from "./tableUtils";
+import { getCSVRenderer, getHTMLParser, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "./tableUtils";
 
 module.exports = {
     default: function(context) {
@@ -172,12 +172,25 @@ module.exports = {
                     Convert table:
                 */
                 CodeMirror.defineExtension('convertSelectionToMarkdownTable', replaceSelectionFunc(context, async (table, settings) => {
-                    const parsedTable = getHTMLParser().parse(table);
-                    return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                    const parsedTable = parseTable(table, settings.selectedFormat);
+                    if (parsedTable)
+                        return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                    else
+                        await context.postMessage({ name: 'alert', text: "Error: Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported." });
                 }));
                 CodeMirror.defineExtension('convertSelectionToHTMLTable', replaceSelectionFunc(context, async (table, settings) => {
-                    const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
-                    return getHTMLRenderer().render(parsedTable);
+                    const parsedTable = parseTable(table, settings.selectedFormat);
+                    if (parsedTable)
+                        return getHTMLRenderer().render(parsedTable);
+                    else
+                        await context.postMessage({ name: 'alert', text: "Error: Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported." });
+                }));
+                CodeMirror.defineExtension('convertSelectionToCSVTable', replaceSelectionFunc(context, async (table, settings) => {
+                    const parsedTable = parseTable(table, settings.selectedFormat);
+                    if (parsedTable)
+                        return getCSVRenderer().render(parsedTable);
+                    else
+                        await context.postMessage({ name: 'alert', text: "Error: Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported." });
                 }));
             },
         }

@@ -129,6 +129,21 @@ const commands : Command[] = [
         execute: editorExecCommand("convertSelectionToHTMLTable")
     },
     {
+        name: "convertSelectionToCSVTable",
+        label: "Convert selection to CSV table",
+        iconName: null,
+        accelerator: null,
+        menuItem: {
+            commandName: "convertSelectionToCSVTable"
+        },
+        add: {
+            toContextMenu: false,
+            toToolsMenu: "tableToolsConvert",
+            asToolbarButton: false
+        },
+        execute: editorExecCommand("convertSelectionToCSVTable")
+    },
+    {
         name: "tableAddRowAbove",
         label: "Row (+): Add above ↑",
         iconName: null,
