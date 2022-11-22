@@ -9,6 +9,8 @@ export async function getSettings() {
 		"selectedFormat": await joplin.settings.value('tableToolsSelectedFormat'),
 		"useMarkdownItExtension": await joplin.settings.value('tableToolsUseMarkdownItExtension'),
 		"useNativeDialogs": await joplin.settings.value('tableToolsDebugUseNativeDialogs'),
+		"allowAddToToolbar": await joplin.settings.value('tableToolsAddButtonsToToolbar'),
+		"allowAddToContextMenu": await joplin.settings.value('tableToolsAddCommandsToContextMenu'),
 	}
 }
 
@@ -20,7 +22,7 @@ export async function registerAllSettings() {
 
 	await joplin.settings.registerSection(section, {
 		label: 'MultiMarkdown Table Tools',
-		description: 'You can configure the behavior of the "MultiMarkdown Table Tools" plugin here.',
+		description: 'You can configure the behavior of the "MultiMarkdown Table Tools" plugin here. ⚠ You may need to restart Joplin for some of these settings to take effect.',
 		iconName: 'fas fa-table'
 	});
 
@@ -38,13 +40,27 @@ export async function registerAllSettings() {
 				'gfm': 'GitHub Flavored Markdown'
 			},
 		},
+		['tableToolsAddButtonsToToolbar']: {
+			public: true,
+			section: section,
+			type: SettingItemType.Bool,
+			value: true,
+			label: 'Add buttons to toolbar',
+		},
+		['tableToolsAddCommandsToContextMenu']: {
+			public: true,
+			section: section,
+			type: SettingItemType.Bool,
+			value: true,
+			label: 'Add options to contextmenu',
+		},
 		['tableToolsUseMarkdownItExtension']: {
 			public: true,
 			section: section,
 			type: SettingItemType.Bool,
 			value: false,
 			label: 'Use forked MultiMarkdown table extension',
-			description: 'Forked from "markdown-it-multimd-table" version 4.2.0 by redbug312. The fork adds caption-side CSS. ⚠ Please disable the built-in MultiMarkdown table extension before enabling this. Also you may need to restart Joplin for this option to take effect.',
+			description: 'Forked from "markdown-it-multimd-table" version 4.2.0 by redbug312. The fork adds caption-side CSS. ⚠ Please disable the built-in MultiMarkdown table extension before enabling this.',
 		},
 		['tableToolsDebugUseNativeDialogs']: {
 			advanced: true,

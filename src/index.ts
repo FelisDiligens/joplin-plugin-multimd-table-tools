@@ -18,13 +18,13 @@ joplin.plugins.register({
         dialogNewTable = await Dialogs.CreateNewTableDialog();
         dialogMoveRow = await Dialogs.CreateMoveRowDialog();
         dialogMoveColumn = await Dialogs.CreateMoveColumnDialog();
+
+        await registerAllSettings();
+        settings = await getSettings();
         
         await joplin.contentScripts.register(ContentScriptType.CodeMirrorPlugin, "MultiMarkdownTableTools", "./cmPlugin.js");
 
-        await registerAllCommands();
-        await registerAllSettings();
-
-        settings = await getSettings();
+        await registerAllCommands(settings.allowAddToToolbar, settings.allowAddToContextMenu);
 
         if (settings.useMarkdownItExtension) {
             await joplin.contentScripts.register(

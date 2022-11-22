@@ -32,7 +32,7 @@ const commands : Command[] = [
             commandName: "createTable"
         },
         add: {
-            toContextMenu: true,
+            toContextMenu: false,
             toToolsMenu: "tableTools",
             asToolbarButton: true
         },
@@ -56,15 +56,15 @@ const commands : Command[] = [
     {
         name: "formatAllTables",
         label: "Format all tables",
-        iconName: null,
+        iconName: "fas fa-star-of-life", // table-cells, icon-table2
         accelerator: null,
         menuItem: {
             commandName: "formatAllTables"
         },
         add: {
-            toContextMenu: true,
+            toContextMenu: false,
             toToolsMenu: "tableToolsFormat",
-            asToolbarButton: false
+            asToolbarButton: true
         },
         execute: editorExecCommand("formatAllTables")
     },
@@ -161,7 +161,7 @@ const commands : Command[] = [
     {
         name: "tableAddRowBelow",
         label: "Row (+): Add below ↓",
-        iconName: null,
+        iconName: "fas fa-grip-lines", // fas fa-plus, fas fa-equals, fas fa-square-plus, fas fa-table-rows, fas fa-diagram-next
         accelerator: null,
         menuItem: {
             commandName: "tableAddRowBelow"
@@ -169,7 +169,7 @@ const commands : Command[] = [
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsRow",
-            asToolbarButton: false
+            asToolbarButton: true
         },
         execute: editorExecCommand("tableAddRowBelow")
     },
@@ -221,7 +221,7 @@ const commands : Command[] = [
     {
         name: "tableAddColumnRight",
         label: "Column (+): Add right →",
-        iconName: null,
+        iconName: "fas fa-grip-lines-vertical", // fas fa-plus, fas fa-square-plus, fa-table-columns
         accelerator: null,
         menuItem: {
             commandName: "tableAddColumnRight"
@@ -229,7 +229,7 @@ const commands : Command[] = [
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsColumn",
-            asToolbarButton: false
+            asToolbarButton: true
         },
         execute: editorExecCommand("tableAddColumnRight")
     },
@@ -266,7 +266,7 @@ const commands : Command[] = [
     {
         name: "tableTextAlignLeft",
         label: "Text: Align left ←",
-        iconName: null,
+        iconName: "fas fa-align-left",
         accelerator: null,
         menuItem: {
             commandName: "tableTextAlignLeft"
@@ -274,14 +274,14 @@ const commands : Command[] = [
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsText",
-            asToolbarButton: false
+            asToolbarButton: true
         },
         execute: editorExecCommand("tableTextAlignLeft")
     },
     {
         name: "tableTextAlignCenter",
         label: "Text: Align center ↔",
-        iconName: null,
+        iconName: "fas fa-align-center",
         accelerator: null,
         menuItem: {
             commandName: "tableTextAlignCenter"
@@ -289,14 +289,14 @@ const commands : Command[] = [
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsText",
-            asToolbarButton: false
+            asToolbarButton: true
         },
         execute: editorExecCommand("tableTextAlignCenter")
     },
     {
         name: "tableTextAlignRight",
         label: "Text: Align right →",
-        iconName: null,
+        iconName: "fas fa-align-right",
         accelerator: null,
         menuItem: {
             commandName: "tableTextAlignRight"
@@ -304,7 +304,7 @@ const commands : Command[] = [
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsText",
-            asToolbarButton: false
+            asToolbarButton: true
         },
         execute: editorExecCommand("tableTextAlignRight")
     },
@@ -325,7 +325,7 @@ const commands : Command[] = [
     }
 ];
 
-export function registerAllCommands() {
+export function registerAllCommands(allowAddToToolbar: boolean, allowAddToContextMenu: boolean) {
     commands.forEach(command => {
         joplin.commands.register({
             name: command.name,
@@ -334,14 +334,14 @@ export function registerAllCommands() {
             execute: command.execute
         });
 
-        if (command.add.toContextMenu) {
+        if (command.add.toContextMenu && allowAddToContextMenu) {
             if (command.accelerator !== null)
                 joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu, { accelerator: command.accelerator});
             else
                 joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu);
         }
 
-        if (command.add.asToolbarButton) {
+        if (command.add.asToolbarButton && allowAddToToolbar) {
             joplin.views.toolbarButtons.create(command.label, command.name, ToolbarButtonLocation.EditorToolbar);
         }
     });
