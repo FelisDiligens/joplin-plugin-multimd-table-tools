@@ -64,7 +64,7 @@
 ### From the repo (recommended)
 
 - Go to the settings (Tools → Options) → Plugins
-- Search for CodeMirror Options
+- Search for `MultiMarkdown Table Tools`
 - Click 'Install' and restart Joplin
 - Enjoy
 
