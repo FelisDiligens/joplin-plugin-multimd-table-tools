@@ -1,4 +1,4 @@
-import { Editor, Position } from 'CodeMirror';
+import { Editor, Position } from 'codemirror';
 
 const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
 const captionRegex = /^(\[.+\]){1,2}$/;

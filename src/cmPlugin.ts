@@ -1,5 +1,4 @@
 import { Table } from "md-table-tools";
-import { Editor, Position } from 'CodeMirror';
 import { replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getHTMLParser, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer } from "./tableUtils";
 
