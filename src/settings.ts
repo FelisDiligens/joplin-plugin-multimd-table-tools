@@ -7,7 +7,8 @@ import { SettingItemType } from 'api/types';
 export async function getSettings() {
 	return {
 		"selectedFormat": await joplin.settings.value('tableToolsSelectedFormat'),
-		"useMarkdownItExtension": await joplin.settings.value('tableToolsUseMarkdownItExtension')
+		"useMarkdownItExtension": await joplin.settings.value('tableToolsUseMarkdownItExtension'),
+		"useNativeDialogs": await joplin.settings.value('tableToolsDebugUseNativeDialogs'),
 	}
 }
 
@@ -38,13 +39,21 @@ export async function registerAllSettings() {
 			},
 		},
 		['tableToolsUseMarkdownItExtension']: {
-			advanced: true,
 			public: true,
 			section: section,
 			type: SettingItemType.Bool,
 			value: false,
 			label: 'Use forked MultiMarkdown table extension',
 			description: 'Forked from "markdown-it-multimd-table" version 4.2.0 by redbug312. The fork adds caption-side CSS. ⚠ Please disable the built-in MultiMarkdown table extension before enabling this. Also you may need to restart Joplin for this option to take effect.',
+		},
+		['tableToolsDebugUseNativeDialogs']: {
+			advanced: true,
+			public: true,
+			section: section,
+			type: SettingItemType.Bool,
+			value: false,
+			label: 'Use native dialogs when possible',
+			description: 'If you experience issues with Joplin\'s dialogs (= not displaying text), enable this option to use native dialogs instead. (Not always applicable)',
 		},
 	});
 }

@@ -31,7 +31,8 @@ module.exports = {
                     catch (error) {
                         await context.postMessage({
                             name: 'alert',
-                            text: error.toString()
+                            text: error.toString(),
+                            title: "Error"
                         });
                     }
                 });
@@ -73,11 +74,12 @@ module.exports = {
                 }));
                 CodeMirror.defineExtension('tableDeleteRow', replaceRangeFunc(context, async (table, selection, settings) => {
                     const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
-                    let confirm = await context.postMessage({
+                    let result = await context.postMessage({
                         name: 'confirm',
-                        text: "Are you sure you want to delete the current row?"
+                        text: "Are you sure you want to delete the current row?",
+                        title: "Delete row?"
                     });
-                    if (confirm) {
+                    if (result.confirm) {
                         parsedTable.removeRow(selection.row);
                         parsedTable.update();
                         return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
@@ -117,16 +119,16 @@ module.exports = {
                 }));
                 CodeMirror.defineExtension('tableDeleteColumn', replaceRangeFunc(context, async (table, selection, settings) => {
                     const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
-                    let confirm = await context.postMessage({
+                    let result = await context.postMessage({
                         name: 'confirm',
-                        text: "Are you sure you want to delete the current column?"
+                        text: "Are you sure you want to delete the current column?",
+                        title: "Delete column?"
                     });
-                    if (confirm) {
+                    if (result.confirm) {
                         parsedTable.removeColumn(selection.column);
                         parsedTable.update();
                         return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
                     }
-                    return null;
                 }));
                 CodeMirror.defineExtension('tableMoveColumn', replaceRangeFunc(context, async (table, selection, settings) => {
                     const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
@@ -141,7 +143,6 @@ module.exports = {
                         parsedTable.update();
                         return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
                     }
-                    return null;
                 }));
                 
                 /*
@@ -176,21 +177,33 @@ module.exports = {
                     if (parsedTable)
                         return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
                     else
-                        await context.postMessage({ name: 'alert', text: "Error: Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported." });
+                        await context.postMessage({
+                            name: 'alert',
+                            text: "Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported.",
+                            title: "Error"
+                        });
                 }));
                 CodeMirror.defineExtension('convertSelectionToHTMLTable', replaceSelectionFunc(context, async (table, settings) => {
                     const parsedTable = parseTable(table, settings.selectedFormat);
                     if (parsedTable)
                         return getHTMLRenderer().render(parsedTable);
                     else
-                        await context.postMessage({ name: 'alert', text: "Error: Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported." });
+                        await context.postMessage({
+                            name: 'alert',
+                            text: "Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported.",
+                            title: "Error"
+                        });
                 }));
                 CodeMirror.defineExtension('convertSelectionToCSVTable', replaceSelectionFunc(context, async (table, settings) => {
                     const parsedTable = parseTable(table, settings.selectedFormat);
                     if (parsedTable)
                         return getCSVRenderer().render(parsedTable);
                     else
-                        await context.postMessage({ name: 'alert', text: "Error: Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported." });
+                        await context.postMessage({
+                            name: 'alert',
+                            text: "Couldn't detect table format.\nPlease make sure to select the table fully. Only HTML, Markdown, and CSV are supported.",
+                            title: "Error"
+                        });
                 }));
             },
         }

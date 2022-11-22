@@ -211,14 +211,16 @@ export function replaceAllTablesFunc(context, callback): Function {
             if (errors.length > 0) {
                 await context.postMessage({
                     name: 'alert',
-                    text: `${errors.length} errors occured while formatting tables: \n` + errors.reduce((pv, cv) => pv.message + ", \n" + cv.message)
+                    text: `${errors.length} errors occured while formatting tables: \n` + errors.reduce((pv, cv) => pv.message + ", \n" + cv.message),
+                    title: "Error"
                 });
             }
         }
         else {
             await context.postMessage({
                 name: 'alert',
-                text: 'No tables found in the document.'
+                text: 'No tables found in the document.',
+                title: "Error"
             });
         }
     };
@@ -241,14 +243,16 @@ export function replaceRangeFunc(context, callback): Function {
             catch (error) {
                 await context.postMessage({
                     name: 'alert',
-                    text: error.toString()
+                    text: error.toString(),
+                    title: "Error"
                 });
             }
         }
         else {
             await context.postMessage({
                 name: 'alert',
-                text: 'No table found at the cursors position.'
+                text: 'No table found at the cursors position.',
+                title: "Error"
             });
         }
     };
@@ -266,7 +270,8 @@ export function replaceSelectionFunc(context, callback): Function {
         catch (error) {
             await context.postMessage({
                 name: 'alert',
-                text: error.toString()
+                text: error.toString(),
+                title: "Error"
             });
         }
     };

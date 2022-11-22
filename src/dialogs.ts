@@ -8,6 +8,7 @@ export class Dialog {
     private dialogResult: DialogResult;
     private defaultFormData: Object;
     private positiveIds: string[];
+    public template: string;
 
     private makeid(length) {
         // https://stackoverflow.com/a/1349426
@@ -24,6 +25,7 @@ export class Dialog {
         this.id = this.makeid(32);
         this.defaultFormData = {};
         this.positiveIds = ["ok", "yes", "accept"];
+        this.template = "";
     }
 
     public async create() {
@@ -38,6 +40,14 @@ export class Dialog {
      */
     public async setHtml(html: string) {
         return await joplin.views.dialogs.setHtml(this.viewHandle, html);
+    }
+
+    public async useTemplate(obj: {} = {}) {
+        let html = this.template;
+        for (var key of Object.keys(obj)) {
+            html = html.replace(new RegExp(`\{${key}\}`, "g"), obj[key]);
+        }
+        return await this.setHtml(html);
     }
 
     /**
@@ -102,18 +112,18 @@ export class Dialogs {
         await dialog.create();
         await dialog.setButtons([{id: "createTable", title: "Create table"}, {id: "cancel"}]);
         dialog.addPositiveIds("createTable");
-        await dialog.setHtml(`
+        dialog.template = `
             <div>
                 <h3>Create new table</h3>
                 <form>
                     <table>
                         <tr>
                             <td>Rows:</td>
-                            <td><input type="number" name="rows" value="1" min="1"></td>
+                            <td><input type="number" name="rows" value="1" min="1" max="100"></td>
                         </tr>
                         <tr>
                             <td>Columns:</td>
-                            <td><input type="number" name="columns" value="1" min="1"></td>
+                            <td><input type="number" name="columns" value="1" min="1" max="100"></td>
                         </tr>
                         <tr>
                             <td colspan="2">
@@ -123,7 +133,7 @@ export class Dialogs {
                     </table>
                 </form>
             </div>
-        `)
+        `;
         dialog.setDefaultFormData({
             "rows": 1,
             "columns": 1,
@@ -132,47 +142,73 @@ export class Dialogs {
         return dialog;
     }
 
-    public static async CreateMoveRowDialog(currentIndex: number, rowCount: number): Promise<Dialog> {
+    public static async CreateMoveRowDialog(): Promise<Dialog> {
         let dialog = new Dialog();
         await dialog.create();
         await dialog.setButtons([{id: "move", title: "Move"}, {id: "cancel"}]);
         dialog.addPositiveIds("move");
-        await dialog.setHtml(`
+        dialog.template = `
             <div>
                 <h3>Move row</h3>
                 <p>To which position do you want to move the selected row?</p>
-                <p><em>The row is currently at position ${currentIndex + 1}</em></p>
+                <p><em>The row is currently at position {currentIndex}</em></p>
                 <form>
                     <p><strong>New position:</strong></p>
-                    <input type="number" name="newindex" value="${currentIndex + 1}" min="1" max="${rowCount + 1}">
+                    <input type="number" name="newindex" value="{currentIndex}" min="1" max="{rowCount}">
                 </form>
             </div>
-        `)
+        `;
         dialog.setDefaultFormData({
-            "newindex": currentIndex + 1
+            "newindex": 1
         });
         return dialog;
     }
 
-    public static async CreateMoveColumnDialog(currentIndex: number, columnCount: number): Promise<Dialog> {
+    public static async CreateMoveColumnDialog(): Promise<Dialog> {
         let dialog = new Dialog();
         await dialog.create();
         await dialog.setButtons([{id: "move", title: "Move"}, {id: "cancel"}]);
         dialog.addPositiveIds("move");
-        await dialog.setHtml(`
+        dialog.template = `
             <div>
                 <h3>Move column</h3>
                 <p>To which position do you want to move the selected column?</p>
-                <p><em>The column is currently at position ${currentIndex + 1}</em></p>
+                <p><em>The column is currently at position {currentIndex}</em></p>
                 <form>
                     <p><strong>New position:</strong></p>
-                    <input type="number" name="newindex" value="${currentIndex + 1}" min="0" max="${columnCount + 1}">
+                    <input type="number" name="newindex" value="{currentIndex}" min="1" max="{columnCount}">
                 </form>
             </div>
-        `)
+        `;
         dialog.setDefaultFormData({
-            "newindex": currentIndex + 1
+            "newindex": 1
         });
+        return dialog;
+    }
+
+    public static async CreateAlertDialog(): Promise<Dialog> {
+        let dialog = new Dialog();
+        await dialog.create();
+        await dialog.setButtons([{id: "ok"}]);
+        dialog.template = `
+            <div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+            </div>
+        `;
+        return dialog;
+    }
+
+    public static async CreateConfirmDialog(): Promise<Dialog> {
+        let dialog = new Dialog();
+        await dialog.create();
+        await dialog.setButtons([{id: "yes"}, {id: "no"}]);
+        dialog.template = `
+            <div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+            </div>
+        `;
         return dialog;
     }
 }
