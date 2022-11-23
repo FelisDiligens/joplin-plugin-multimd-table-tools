@@ -12,6 +12,8 @@ export async function getSettings() {
 		"allowAddToToolbar": await joplin.settings.value('tableToolsAddButtonsToToolbar'),
 		"allowAddToContextMenu": await joplin.settings.value('tableToolsAddCommandsToContextMenu'),
 		"allowHotkeys": await joplin.settings.value('tableToolsAllowHotkeys'),
+		"tabBehavior": await joplin.settings.value('tableToolsTabBehavior'),
+		"enterBehavior": await joplin.settings.value('tableToolsEnterBehavior'),
 	}
 }
 
@@ -61,6 +63,35 @@ export async function registerAllSettings() {
 			type: SettingItemType.Bool,
 			value: true,
 			label: 'Enable hotkeys',
+		},
+		['tableToolsTabBehavior']: { 
+			public: true,
+			section: section,
+			type: SettingItemType.String,
+			isEnum: true,
+			value: 'selectContent',
+			label: "'Tab' behavior",
+			description: 'Where do you want to place the cursor when pressing Tab or Shift+Tab inside a table?',
+			options: {
+				'jumpToStart': 'Jump to the start of the cell',
+				'jumpToEnd': 'Jump to the end of the cell',
+				'selectContent': 'Select the contents of the cell', // This is the same behavior that Microsoft Word (and Excel) exhibits.
+				//'disabled': 'Disable this hotkey',
+			},
+		},
+		['tableToolsEnterBehavior']: { 
+			public: true,
+			section: section,
+			type: SettingItemType.String,
+			isEnum: true,
+			value: 'insertBrTag',
+			label: "'Enter' behavior",
+			description: 'What should happen when you press Enter inside a table?',
+			options: {
+				'insertBrTag': 'Insert <br> tag',
+				//'addRowBelow': 'Add new row below',
+				'default': 'Insert newline',
+			},
 		},
 		['tableToolsUseMarkdownItExtension']: {
 			public: true,

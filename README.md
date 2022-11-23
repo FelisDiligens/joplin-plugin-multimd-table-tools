@@ -63,11 +63,14 @@
 
 All actions are relative to where you placed the I-beam (also called I-cursor) in the text editor:
 
-| Hotkey                          | Action                     |
-|---------------------------------|----------------------------|
-| `Cmd` or `Ctrl` + `Enter`       | Insert row below           |
-| `Cmd` or `Ctrl` + `Tab`         | Insert column to the right |
-| `Cmd` or `Ctrl` + `Shift` + `F` | Format current table       |
+| Hotkey                          | Action                           |
+|---------------------------------|----------------------------------|
+| `Tab`                           | Jump to next cell                |
+| `Shift` + `Tab`                 | Jump to previous cell            |
+| `Enter`                         | Insert `<br>` instead of newline |
+| `Cmd` or `Ctrl` + `Enter`       | Insert row below                 |
+| `Cmd` or `Ctrl` + `Tab`         | Insert column to the right       |
+| `Cmd` or `Ctrl` + `Shift` + `F` | Format current table             |
 
 All of these actions can also be performed from the menu (e.g. Tools → Table tools → Row -> Insert below).
 

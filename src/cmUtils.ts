@@ -8,11 +8,11 @@ interface Range {
     to: Position
 }
 
-function createPosition(line: number, ch: number): Position {
+export function createPosition(line: number, ch: number): Position {
     return {line, ch};
 }
 
-function createRange(from: Position, to: Position): Range {
+export function createRange(from: Position, to: Position): Range {
     return {
         from,
         to
@@ -38,6 +38,43 @@ function determineColumnIndex(line: string, ch: number): number {
         }
     }
     return colIndex;
+}
+
+export function getColumnRanges(line: string, cursor: Position) {
+    if (!line.trim().endsWith("|"))
+        line += "|";
+
+    let ranges: Range[] = [];
+    let cursorColIndex: number;
+    
+    let rangeStart = line.trim().startsWith("|") ? line.indexOf("|") : 0;
+    let colIndex = 0;
+    let escape = false;
+    for (let ch = line.startsWith("|") ? 1 : 0; ch < line.length; ch++) {
+        if (line.charAt(ch) == "|" && !escape) {
+            if (rangeStart <= cursor.ch && cursor.ch <= ch) {
+                cursorColIndex = colIndex;
+            }
+            ranges.push(createRange(
+                createPosition(cursor.line, rangeStart),
+                createPosition(cursor.line, ch)
+            ));
+            rangeStart = ch + 1;
+            colIndex++;
+        } else if (line.charAt(ch) == "\\") {
+            escape = !escape;
+        }
+    }
+
+    return {
+        ranges,
+        firstRange: ranges[0],
+        previousRange: ranges[cursorColIndex - 1],
+        currentRange: ranges[cursorColIndex],
+        nextRange: ranges[cursorColIndex + 1],
+        lastRange: ranges[ranges.length - 1],
+        colIndex: cursorColIndex
+    }
 }
 
 /**
@@ -101,6 +138,16 @@ export function getRangesOfAllTables(cm: Editor, allowEmptyLine: boolean): Range
     }
 
     return ranges;
+}
+
+/**
+ * Returns whether the cursor sits inside a table.
+ * @remarks It currently uses getRangeOfTable, which might not be as efficent.
+ * @param cm The CodeMirror editor
+ * @param allowEmptyLine Whether it should ignore a single empty line (MultiMarkdown).
+ */
+export function isCursorInTable(cm: Editor, allowEmptyLine: boolean): boolean {
+    return getRangeOfTable(cm, allowEmptyLine) !== null;
 }
 
 /**
