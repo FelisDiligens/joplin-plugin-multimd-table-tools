@@ -56,7 +56,7 @@
 ## ✨ Features
 
 - Create new tables with ease.
-- Format and minify Markdown tables.
+- Format and minify Markdown tables (without breaking MultiMarkdown tables).
 - Add, delete, and move table rows and columns.
 - Align text left, center, or right.
 - Jump to next or previous cell with `Tab` and `Shift` + `Tab`.
