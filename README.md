@@ -44,6 +44,14 @@
     </tr>
 </table>
 
+<p align="center">
+    <a href="#-features">Features</a> |
+    <a href="#hotkeys">Hotkeys</a> |
+    <a href="#-screenshots">Screenshots</a> |
+    <a href="#%EF%B8%8F-installation">Installation</a> |
+    <a href="#-usage">Usage</a> |
+    <a href="#-known-issues">Known issues</a>
+</p>
 
 ## ✨ Features
 
@@ -101,6 +109,8 @@ All of these actions can also be performed from the menu (e.g. Tools → Table t
 > TODO
 
 ## 🐛 Known issues
+
+The following issues seem to correlate with lower-end hardware:
 
 ### Broken dialogs
 
