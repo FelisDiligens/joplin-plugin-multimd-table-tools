@@ -46,10 +46,10 @@
 
 <p align="center">
     <a href="#-features">Features</a> |
-    <a href="#hotkeys">Hotkeys</a> |
     <a href="#-screenshots">Screenshots</a> |
     <a href="#%EF%B8%8F-installation">Installation</a> |
     <a href="#-usage">Usage</a> |
+    <a href="#hotkeys">Hotkeys</a> |
     <a href="#-known-issues">Known issues</a>
 </p>
 
@@ -67,21 +67,6 @@
   - This also makes this plugin compatible with other plugins that use the same hotkeys or equally named contextmenu items.
 - Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*
   - Allows you to place table captions below a table. See [this forum post](https://discourse.joplinapp.org/t/multimarkdown-table-captions-above-table-not-below/2819).
-
-### Hotkeys
-
-All actions are relative to where you placed the I-beam (also called I-cursor) in the text editor:
-
-| Hotkey                          | Action                           |
-|---------------------------------|----------------------------------|
-| `Tab`                           | Jump to next cell                |
-| `Shift` + `Tab`                 | Jump to previous cell            |
-| `Enter`                         | Insert `<br>` instead of newline |
-| `Cmd` or `Ctrl` + `Enter`       | Insert row below                 |
-| `Cmd` or `Ctrl` + `Tab`         | Insert column to the right       |
-| `Cmd` or `Ctrl` + `Shift` + `F` | Format current table             |
-
-All of these actions can also be performed from the menu (e.g. Tools → Table tools → Row -> Insert below).
 
 ## 📸 Screenshots
 
@@ -107,6 +92,21 @@ All of these actions can also be performed from the menu (e.g. Tools → Table t
 ## ⚡ Usage
 
 > TODO
+
+### Hotkeys
+
+All actions are relative to where you placed the I-beam (also called I-cursor) in the text editor:
+
+| Hotkey                          | Action                           |
+|---------------------------------|----------------------------------|
+| `Tab`                           | Jump to next cell                |
+| `Shift` + `Tab`                 | Jump to previous cell            |
+| `Enter`                         | Insert `<br>` instead of newline |
+| `Cmd` or `Ctrl` + `Enter`       | Insert row below                 |
+| `Cmd` or `Ctrl` + `Tab`         | Insert column to the right       |
+| `Cmd` or `Ctrl` + `Shift` + `F` | Format current table             |
+
+All of these actions can also be performed from the menu (e.g. Tools → Table tools → Row -> Insert below).
 
 ## 🐛 Known issues
 
