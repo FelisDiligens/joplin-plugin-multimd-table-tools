@@ -47,10 +47,10 @@ export function getColumnRanges(line: string, cursor: Position) {
     let ranges: Range[] = [];
     let cursorColIndex: number;
     
-    let rangeStart = line.trim().startsWith("|") ? line.indexOf("|") : 0;
+    let rangeStart = line.trim().startsWith("|") ? line.indexOf("|") + 1 : 0;
     let colIndex = 0;
     let escape = false;
-    for (let ch = line.startsWith("|") ? 1 : 0; ch < line.length; ch++) {
+    for (let ch = rangeStart; ch < line.length; ch++) {
         if (line.charAt(ch) == "|" && !escape) {
             if (rangeStart <= cursor.ch && cursor.ch <= ch) {
                 cursorColIndex = colIndex;
