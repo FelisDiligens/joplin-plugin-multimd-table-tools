@@ -45,7 +45,9 @@ export class Dialog {
     public async useTemplate(obj: {} = {}) {
         let html = this.template;
         for (var key of Object.keys(obj)) {
-            html = html.replace(new RegExp(`\{${key}\}`, "g"), obj[key]);
+            html = html.replace(
+                new RegExp(`\{${key}\}`, "g"),
+                typeof obj[key] == "string" ? obj[key].replace(/\r?\n/g, "<br>") : obj[key].toString());
         }
         return await this.setHtml(html);
     }
@@ -107,7 +109,7 @@ export class Dialog {
 }
 
 export class Dialogs {
-    public static async CreateNewTableDialog(): Promise<Dialog> {
+    public static async createNewTableDialog(): Promise<Dialog> {
         let dialog = new Dialog();
         await dialog.create();
         await dialog.setButtons([{id: "createTable", title: "Create table"}, {id: "cancel"}]);
@@ -142,7 +144,19 @@ export class Dialogs {
         return dialog;
     }
 
-    public static async CreateMoveRowDialog(): Promise<Dialog> {
+    public static async openNewTableDialog(dialog: Dialog) {
+        dialog.useTemplate();
+        await dialog.open();
+        return dialog.getPreparedDialogResult();
+    }
+
+    /*public static async postNewTableDialog(context) {
+        return await context.postMessage({
+            name: "dialog.createTable"
+        });
+    }*/
+
+    public static async createMoveRowDialog(): Promise<Dialog> {
         let dialog = new Dialog();
         await dialog.create();
         await dialog.setButtons([{id: "move", title: "Move"}, {id: "cancel"}]);
@@ -164,7 +178,27 @@ export class Dialogs {
         return dialog;
     }
 
-    public static async CreateMoveColumnDialog(): Promise<Dialog> {
+    public static async openMoveRowDialog(dialog: Dialog, currentIndex: number, rowCount: number) {
+        dialog.useTemplate({
+            "currentIndex": currentIndex + 1,
+            "rowCount": rowCount
+        });
+        dialog.setDefaultFormData({
+            "newindex": currentIndex + 1
+        });
+        await dialog.open();
+        return dialog.getPreparedDialogResult();
+    }
+
+    /*public static async postMoveRowDialog(context, currentIndex: number, rowCount: number) {
+        return await context.postMessage({
+            name: "dialog.moveRow",
+            currentIndex,
+            rowCount
+        });
+    }*/
+
+    public static async createMoveColumnDialog(): Promise<Dialog> {
         let dialog = new Dialog();
         await dialog.create();
         await dialog.setButtons([{id: "move", title: "Move"}, {id: "cancel"}]);
@@ -186,7 +220,27 @@ export class Dialogs {
         return dialog;
     }
 
-    public static async CreateAlertDialog(): Promise<Dialog> {
+    public static async openMoveColumnDialog(dialog: Dialog, currentIndex: number, columnIndex: number) {
+        dialog.useTemplate({
+            "currentIndex": currentIndex + 1,
+            "columnIndex": columnIndex
+        });
+        dialog.setDefaultFormData({
+            "newindex": currentIndex + 1
+        });
+        await dialog.open();
+        return dialog.getPreparedDialogResult();
+    }
+
+    /*public static async postMoveColumnDialog(context, currentIndex: number, columnCount: number) {
+        return await context.postMessage({
+            name: "dialog.moveColumn",
+            currentIndex,
+            columnCount
+        });
+    }*/
+
+    public static async createAlertDialog(): Promise<Dialog> {
         let dialog = new Dialog();
         await dialog.create();
         await dialog.setButtons([{id: "ok"}]);
@@ -199,7 +253,30 @@ export class Dialogs {
         return dialog;
     }
 
-    public static async CreateConfirmDialog(): Promise<Dialog> {
+    public static async openAlertDialog(dialog: Dialog, text: string, title: string, useNativeDialog: boolean) {
+        if (useNativeDialog) {
+            alert(`${title}: ${text}`);
+            return { id: "ok", confirm: true, formData: {} };
+        }
+        else {
+            dialog.useTemplate({
+                "text": text,
+                "title": title
+            });
+            await dialog.open();
+            return dialog.getPreparedDialogResult();
+        }
+    }
+
+    /*public static async postAlertDialog(context, text: string, title: string) {
+        return await context.postMessage({
+            name: "alert",
+            text,
+            title
+        });
+    }*/
+
+    public static async createConfirmDialog(): Promise<Dialog> {
         let dialog = new Dialog();
         await dialog.create();
         await dialog.setButtons([{id: "yes"}, {id: "no"}]);
@@ -211,4 +288,27 @@ export class Dialogs {
         `;
         return dialog;
     }
+
+    public static async openConfirmDialog(dialog: Dialog, text: string, title: string, useNativeDialog: boolean) {
+        if (useNativeDialog) {
+            let result = confirm(`${title}: ${text}`);
+            return { id: result ? "ok" : "cancel", confirm: result, formData: {} };
+        }
+        else {
+            dialog.useTemplate({
+                "text": text,
+                "title": title
+            });
+            await dialog.open();
+            return dialog.getPreparedDialogResult();
+        }
+    }
+
+    /*public static async postConfirmDialog(context, text: string, title: string) {
+        return await context.postMessage({
+            name: "confirm",
+            text,
+            title
+        });
+    }*/
 }

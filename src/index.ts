@@ -5,19 +5,19 @@ import { Dialog, Dialogs } from './dialogs';
 import { getSettings, registerAllSettings } from './settings';
 
 let settings;
-let alertDialog;
-let confirmDialog;
+let dialogAlert;
+let dialogConfirm;
 let dialogNewTable;
 let dialogMoveRow;
 let dialogMoveColumn;
 
 joplin.plugins.register({
     onStart: async function() {
-        alertDialog = await Dialogs.CreateAlertDialog();
-        confirmDialog = await Dialogs.CreateConfirmDialog();
-        dialogNewTable = await Dialogs.CreateNewTableDialog();
-        dialogMoveRow = await Dialogs.CreateMoveRowDialog();
-        dialogMoveColumn = await Dialogs.CreateMoveColumnDialog();
+        dialogAlert = await Dialogs.createAlertDialog();
+        dialogConfirm = await Dialogs.createConfirmDialog();
+        dialogNewTable = await Dialogs.createNewTableDialog();
+        dialogMoveRow = await Dialogs.createMoveRowDialog();
+        dialogMoveColumn = await Dialogs.createMoveColumnDialog();
 
         await registerAllSettings();
         settings = await getSettings();
@@ -30,7 +30,7 @@ joplin.plugins.register({
             await joplin.contentScripts.register(
                 ContentScriptType.MarkdownItPlugin,
                 'markdown-it-multimd-table',
-                './markdownItExtention.js'
+                './markdownItExtension.js'
             );
         }
 
@@ -40,59 +40,18 @@ joplin.plugins.register({
                     return await getSettings();
                 case "alert":
                     settings = await getSettings();
-                    if (settings.useNativeDialogs) {
-                        alert(`${message.title}: ${message.text}`);
-                        return { id: "ok", confirm: true, formData: {} };
-                    }
-                    else {
-                        alertDialog.useTemplate({
-                            "text": message.text,
-                            "title": message.title
-                        });
-                        await alertDialog.open();
-                        return alertDialog.getPreparedDialogResult();
-                    }
-                    
+                    return await Dialogs.openAlertDialog(dialogAlert, message.text, message.title, settings.useNativeDialogs);
                 case "confirm":
                     settings = await getSettings();
-                    if (settings.useNativeDialogs) {
-                        let result = confirm(`${message.title}: ${message.text}`);
-                        return { id: result ? "ok" : "cancel", confirm: result, formData: {} };
-                    }
-                    else {
-                        confirmDialog.useTemplate({
-                            "text": message.text,
-                            "title": message.title
-                        });
-                        await confirmDialog.open();
-                        return confirmDialog.getPreparedDialogResult();
-                    }
+                    return await Dialogs.openConfirmDialog(dialogConfirm, message.text, message.title, settings.useNativeDialogs);
                 case "dialog.createNewTable":
                 case "dialog.createTable":
                 case "dialog.newTable":
-                    dialogNewTable.useTemplate();
-                    await dialogNewTable.open();
-                    return dialogNewTable.getPreparedDialogResult();
+                    return await Dialogs.openNewTableDialog(dialogNewTable);
                 case "dialog.moveRow":
-                    dialogMoveRow.useTemplate({
-                        "currentIndex": message.currentIndex + 1,
-                        "rowCount": message.rowCount
-                    });
-                    dialogMoveRow.setDefaultFormData({
-                        "newindex": message.currentIndex + 1
-                    });
-                    await dialogMoveRow.open();
-                    return dialogMoveRow.getPreparedDialogResult();
+                    return await Dialogs.openMoveRowDialog(dialogMoveRow, message.currentIndex, message.rowCount);
                 case "dialog.moveColumn":
-                    dialogMoveColumn.useTemplate({
-                        "currentIndex": message.currentIndex + 1,
-                        "columnCount": message.columnCount
-                    });
-                    dialogMoveColumn.setDefaultFormData({
-                        "newindex": message.currentIndex + 1
-                    });
-                    await dialogMoveColumn.open();
-                    return dialogMoveColumn.getPreparedDialogResult();
+                    return await Dialogs.openMoveColumnDialog(dialogMoveColumn, message.currentIndex, message.columnCount);
                 default:
                     return "Error: " + message + " is not a valid message";
             }

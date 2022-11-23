@@ -1,13 +1,11 @@
 import joplin from 'api';
 import { MenuItem, MenuItemLocation, ToolbarButtonLocation } from 'api/types';
-import { Dialog } from './dialogs';
 
 interface Command {
     name: string,
     label: string,
     iconName: string,
     accelerator: string,
-    menuItem: MenuItem,
     add: {
         toContextMenu: boolean,
         toToolsMenu: string,
@@ -28,9 +26,6 @@ const commands : Command[] = [
         label: "Create new table",
         iconName: "fas fa-table",
         accelerator: null,
-        menuItem: {
-            commandName: "createTable"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableTools",
@@ -43,9 +38,6 @@ const commands : Command[] = [
         label: "Format table",
         iconName: null,
         accelerator: "CmdOrCtrl+Shift+F",
-        menuItem: {
-            commandName: "formatTable"
-        },
         add: {
             toContextMenu: true,
             toToolsMenu: "tableToolsFormat",
@@ -56,11 +48,8 @@ const commands : Command[] = [
     {
         name: "formatAllTables",
         label: "Format all tables",
-        iconName: "fas fa-star-of-life", // table-cells, icon-table2
+        iconName: "fas fa-star-of-life", // fas fa-table-cells, icon-table2
         accelerator: null,
-        menuItem: {
-            commandName: "formatAllTables"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsFormat",
@@ -73,9 +62,6 @@ const commands : Command[] = [
         label: "Minify table",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "minifyTable"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsFormat",
@@ -88,9 +74,6 @@ const commands : Command[] = [
         label: "Minify all tables",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "minifyAllTables"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsFormat",
@@ -103,9 +86,6 @@ const commands : Command[] = [
         label: "Convert selection to Markdown table",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "convertSelectionToMarkdownTable"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsConvert",
@@ -118,9 +98,6 @@ const commands : Command[] = [
         label: "Convert selection to HTML table",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "convertSelectionToHTMLTable"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsConvert",
@@ -133,9 +110,6 @@ const commands : Command[] = [
         label: "Convert selection to CSV table",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "convertSelectionToCSVTable"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsConvert",
@@ -148,9 +122,6 @@ const commands : Command[] = [
         label: "Row (+): Add above ↑",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "tableAddRowAbove"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsRow",
@@ -162,10 +133,7 @@ const commands : Command[] = [
         name: "tableAddRowBelow",
         label: "Row (+): Add below ↓",
         iconName: "fas fa-grip-lines", // fas fa-plus, fas fa-equals, fas fa-square-plus, fas fa-table-rows, fas fa-diagram-next
-        accelerator: null,
-        menuItem: {
-            commandName: "tableAddRowBelow"
-        },
+        accelerator: "CmdOrCtrl+Enter",
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsRow",
@@ -178,9 +146,6 @@ const commands : Command[] = [
         label: "Row (↕): Move",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "tableMoveRow"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsRow",
@@ -193,9 +158,6 @@ const commands : Command[] = [
         label: "Row (-): Delete",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "tableDeleteRow"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsRow",
@@ -208,9 +170,6 @@ const commands : Command[] = [
         label: "Column (+): Add left ←",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "tableAddColumnLeft"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsColumn",
@@ -222,10 +181,7 @@ const commands : Command[] = [
         name: "tableAddColumnRight",
         label: "Column (+): Add right →",
         iconName: "fas fa-grip-lines-vertical", // fas fa-plus, fas fa-square-plus, fa-table-columns
-        accelerator: null,
-        menuItem: {
-            commandName: "tableAddColumnRight"
-        },
+        accelerator: "CmdOrCtrl+Tab",
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsColumn",
@@ -238,9 +194,6 @@ const commands : Command[] = [
         label: "Column (↔): Move",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "tableMoveColumn"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsColumn",
@@ -253,9 +206,6 @@ const commands : Command[] = [
         label: "Column (-): Delete",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "tableDeleteColumn"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsColumn",
@@ -268,9 +218,6 @@ const commands : Command[] = [
         label: "Text: Align left ←",
         iconName: "fas fa-align-left",
         accelerator: null,
-        menuItem: {
-            commandName: "tableTextAlignLeft"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsText",
@@ -283,9 +230,6 @@ const commands : Command[] = [
         label: "Text: Align center ↔",
         iconName: "fas fa-align-center",
         accelerator: null,
-        menuItem: {
-            commandName: "tableTextAlignCenter"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsText",
@@ -298,9 +242,6 @@ const commands : Command[] = [
         label: "Text: Align right →",
         iconName: "fas fa-align-right",
         accelerator: null,
-        menuItem: {
-            commandName: "tableTextAlignRight"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsText",
@@ -313,9 +254,6 @@ const commands : Command[] = [
         label: "Text: Clear alignment",
         iconName: null,
         accelerator: null,
-        menuItem: {
-            commandName: "tableTextAlignClear"
-        },
         add: {
             toContextMenu: false,
             toToolsMenu: "tableToolsText",
@@ -350,26 +288,38 @@ export function registerAllCommands(settings) {
         "tableTools",
         "Table tools",
         [
-            ...commands.filter(command => command.add.toToolsMenu == "tableTools").map(command => command.menuItem),
+            ...commands
+               .filter(command => command.add.toToolsMenu == "tableTools")
+               .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
             {
 				label: 'Format',
-				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsFormat").map(command => command.menuItem)
+				submenu: commands
+                         .filter(command => command.add.toToolsMenu == "tableToolsFormat")
+                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Row',
-				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsRow").map(command => command.menuItem)
+				submenu: commands
+                         .filter(command => command.add.toToolsMenu == "tableToolsRow")
+                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Column',
-				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsColumn").map(command => command.menuItem)
+				submenu: commands
+                         .filter(command => command.add.toToolsMenu == "tableToolsColumn")
+                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Text',
-				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsText").map(command => command.menuItem)
+				submenu: commands
+                         .filter(command => command.add.toToolsMenu == "tableToolsText")
+                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Convert',
-				submenu: commands.filter(command => command.add.toToolsMenu == "tableToolsConvert").map(command => command.menuItem)
+				submenu: commands
+                         .filter(command => command.add.toToolsMenu == "tableToolsConvert")
+                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
         ],
         MenuItemLocation.Tools);

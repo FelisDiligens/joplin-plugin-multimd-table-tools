@@ -4,7 +4,7 @@
 	"app_min_version": "2.8",
 	"version": "1.0.0",
 	"name": "MultiMarkdown Table Tools",
-	"description": "Your one-stop-shop for all your table needs. Format, minify, and edit Markdown tables. Convert HTML tables to Markdown and back. And more.",
+	"description": "A collection of tools to make editing tables easier. Also supports GitHub Flavored Markdown!",
 	"author": "FelisDiligens",
 	"homepage_url": "https://github.com/FelisDiligens/joplin-plugin-multimd-table-tools",
 	"repository_url": "https://github.com/FelisDiligens/joplin-plugin-multimd-table-tools",

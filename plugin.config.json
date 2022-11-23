@@ -4,7 +4,7 @@
 		"cmUtils.ts",
 		"commands.ts",
 		"dialogs.ts",
-		"markdownItExtention.ts",
+		"markdownItExtension.ts",
 		"settings.ts",
 		"tableUtils.ts"
 	]

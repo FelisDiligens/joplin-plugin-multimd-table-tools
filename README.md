@@ -16,7 +16,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2"><strong>Your one-stop-shop for all your table needs.</strong></td>
+        <td colspan="2"><strong>A collection of tools to make editing tables easier.</strong></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -53,9 +53,23 @@
 - Align text left, center, or right.
 - Convert tables between HTML, Markdown, and CSV.
 - Choose MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
+- Adds hotkeys, see below. *(opt-out)*
 - Disable features if you don't like them *(toolbar buttons, contextmenu items, hotkeys)*.
+  - This also makes this plugin compatible with other plugins that use the same hotkeys or equally named contextmenu items.
 - Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*
   - Allows you to place table captions below a table. See [this forum post](https://discourse.joplinapp.org/t/multimarkdown-table-captions-above-table-not-below/2819).
+
+### Hotkeys
+
+All actions are relative to where you placed the I-beam (also called I-cursor) in the text editor:
+
+| Hotkey                          | Action                     |
+|---------------------------------|----------------------------|
+| `Cmd` or `Ctrl` + `Enter`       | Insert row below           |
+| `Cmd` or `Ctrl` + `Tab`         | Insert column to the right |
+| `Cmd` or `Ctrl` + `Shift` + `F` | Format current table       |
+
+All of these actions can also be performed from the menu (e.g. Tools → Table tools → Row -> Insert below).
 
 ## 📸 Screenshots
 
@@ -98,7 +112,7 @@
 Every now and then the plugin swallows up its dialogs. There doesn't seem to be anything I can do to fix this.  
 If that happens to you, click "Cancel" and try again.
 
-This is also why I use these dialogs instead, whenever possible:
+Also, if this happens all the time, you can enable these (working) dialogs in the advanced settings and they'll show up whenever feasible:
 
 ![](assets/native-dialog.png)
 
