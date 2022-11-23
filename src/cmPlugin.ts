@@ -3,6 +3,8 @@ import { Table, TextAlignment } from "md-table-tools";
 import { createPosition, getColumnRanges, isCursorInTable, replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getCSVRenderer, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "./tableUtils";
 
+const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
+
 module.exports = {
     default: function(context) {
         const plugin = function(CodeMirror) {
@@ -272,10 +274,11 @@ module.exports = {
                                 } else {
                                     // if not, first select to the current cell:
                                     range = col.currentRange;
+                                    // skip separator row:
+                                    let i = cm.getLine(cursor.line + 1).match(separatorRegex) ? 2 : 1;
                                     // then check, if next row exist and select the first cell in the next row:
-                                    if (cm.getLine(cursor.line + 1).includes("|")) {
-                                        // TODO: Check for separator row!
-                                        col = getColumnRanges(cm.getLine(cursor.line + 1), createPosition(cursor.line + 1, 0));
+                                    if (cm.getLine(cursor.line + i).includes("|")) {
+                                        col = getColumnRanges(cm.getLine(cursor.line + i), createPosition(cursor.line + i, 0));
                                         if (col.ranges.length > 0)
                                             range = col.firstRange;
                                     }
@@ -308,10 +311,11 @@ module.exports = {
                                 } else {
                                     // if not, first select to the current cell:
                                     range = col.currentRange;
+                                    // skip separator row:
+                                    let i = cm.getLine(cursor.line - 1).match(separatorRegex) ? 2 : 1;
                                     // then check, if previous row exist and select the last cell in the previous row:
-                                    if (cm.getLine(cursor.line - 1).includes("|")) {
-                                        // TODO: Check for separator row!
-                                        col = getColumnRanges(cm.getLine(cursor.line - 1), createPosition(cursor.line - 1, 0));
+                                    if (cm.getLine(cursor.line - i).includes("|")) {
+                                        col = getColumnRanges(cm.getLine(cursor.line - i), createPosition(cursor.line - i, 0));
                                         if (col.ranges.length > 0)
                                             range = col.lastRange;
                                     }
