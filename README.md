@@ -62,7 +62,7 @@
 - Jump to next or previous cell with `Tab` and `Shift` + `Tab`.
 - Convert tables between HTML, Markdown, and CSV.
 - Choose MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
-- Adds hotkeys, see below. *(opt-out)*
+- Adds hotkeys, [see below](#hotkeys). *(opt-out)*
 - Disable features if you don't like them *(toolbar buttons, contextmenu items, hotkeys)*.
   - This also makes this plugin compatible with other plugins that use the same hotkeys or equally named contextmenu items.
 - Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*
