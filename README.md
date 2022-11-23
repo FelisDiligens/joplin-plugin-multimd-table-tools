@@ -51,6 +51,7 @@
 - Format and minify Markdown tables.
 - Add, delete, and move table rows and columns.
 - Align text left, center, or right.
+- Jump to next or previous cell with `Tab` and `Shift` + `Tab`.
 - Convert tables between HTML, Markdown, and CSV.
 - Choose MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
 - Adds hotkeys, see below. *(opt-out)*
