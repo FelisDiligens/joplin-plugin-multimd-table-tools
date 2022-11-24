@@ -1,4 +1,4 @@
-> ⚠ This plugin is currently in development and isn't released yet.
+> **Warning** This plugin is currently in development and isn't released yet.
 
 <table>
     <tr>
