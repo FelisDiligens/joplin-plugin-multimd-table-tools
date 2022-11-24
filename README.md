@@ -7,7 +7,7 @@
         </td>
     </tr>
     <tr>
-        <td rowspan="5" align="center">
+        <td rowspan="6" align="center">
             <img src="./assets/joplin.svg" width="64"><br>
             <p>
                 <strong>Joplin Plugin</strong><br>
@@ -40,6 +40,12 @@
             <a href="https://github.com/roman-r-m/joplin-plugin-table-formatter">Table Formatter Plugin</a>,
             <a href="https://github.com/kensam94/joplin-plugin-eztable">Ez Table</a>
             <!-- <a href="https://github.com/coderrsid/paste-special">Paste Special Plugin</a> -->
+        </td>
+    </tr>
+    <tr>
+        <td>Other plugins by me:</td>
+        <td>
+            <a href="https://github.com/FelisDiligens/joplin-plugin-cmoption">CodeMirror options</a>
         </td>
     </tr>
 </table>
