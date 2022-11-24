@@ -83,10 +83,11 @@
 
 ### Manually
 
-- Download the *.jpl file from the [releases](https://github.com/FelisDiligens/joplin-plugin-cmoptions/releases) section
+- Download the *.jpl file from the [releases](https://github.com/FelisDiligens/joplin-plugin-multimd-table-tools/releases) section
 - Go to the settings (Tools → Options) → Plugins
 - Click the gear next to 'Manage your plugins' and choose 'Install from file'
 - Select the downloaded *.jpl file
+- Restart Joplin
 - Enjoy
 
 ## ⚡ Usage
@@ -106,7 +107,7 @@ All actions are relative to where you placed the I-beam (also called I-cursor) i
 | `Cmd` or `Ctrl` + `Tab`         | Insert column to the right       |
 | `Cmd` or `Ctrl` + `Shift` + `F` | Format current table             |
 
-All of these actions can also be performed from the menu (e.g. Tools → Table tools → Row -> Insert below).
+All of these actions can also be performed from the menu (e.g. Tools → Table tools → Row → Insert below).
 
 ## 🐛 Known issues
 
@@ -143,7 +144,8 @@ If that happens to you, click `Format all tables` twice or format each table wit
 If you like this plugin, consider to support me on ☕ ko-fi:
 
 [![](assets/buy-me-a-coffee.png)](https://ko-fi.com/felisdiligens)
- -->
+-->
+
 ## Development
 
 <details>
