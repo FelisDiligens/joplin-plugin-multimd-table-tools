@@ -76,7 +76,17 @@
 
 ## 📸 Screenshots
 
-> TODO
+![](assets/format-demo.gif)
+> Format and minify tables.
+
+![](assets/tab-demo.gif)
+> Use `Tab` and `Shift` + `Tab` to jump.
+
+![](assets/menu-demo.gif)
+> You can find all tools under `Tools` → `Table tools`.
+
+![](assets/settings.png)
+> Customize it to your taste.
 
 ## ⚙️ Installation
 
@@ -141,6 +151,11 @@ Also, if this happens all the time, you can enable these (working) dialogs in th
 
 It could be that only every second table gets formatted, when you click `Format all tables`.  
 If that happens to you, click `Format all tables` twice or format each table with `Format table`.
+
+### Right-click doesn't do anything in text editor
+
+This can happen sometimes, especially if you change settings.  
+Try to restart Joplin.
 
 <!--
 ## ☕ I can haz coffee?
