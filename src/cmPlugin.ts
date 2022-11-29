@@ -238,9 +238,6 @@ module.exports = {
                 Tab, Shift+Tab, Enter
             */
             CodeMirror.defineOption('tableToolsHotkeys', false, (cm: Editor, value: boolean) => {
-                if (!value) return;
-                
-                // TODO
                 cm.on('cursorActivity', async () => {
                     const settings = await context.postMessage({ name: 'getSettings' });
                     var insideTable = isCursorInTable(cm, settings.selectedFormat == "multimd");
