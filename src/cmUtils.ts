@@ -167,11 +167,11 @@ export function getRangeOfTable(cm: Editor, allowEmptyLine: boolean): { range: R
     while (startLine >= 0) {
         let line = cm.getLine(startLine).trim();
 
-        if (line.match(separatorRegex))
-            hasSeparator = true;
-
         // Does line match criteria?
         if (line.includes("|") || line.match(captionRegex)) {
+            if (line.match(separatorRegex))
+                hasSeparator = true;
+
             startLine--; // Move up.
             rowIndex++;
             rememberEmptyLine = false;
@@ -200,11 +200,11 @@ export function getRangeOfTable(cm: Editor, allowEmptyLine: boolean): { range: R
     while (endLine < cm.lineCount()) {
         let line = cm.getLine(endLine).trim();
 
-        if (line.match(separatorRegex))
-            hasSeparator = true;
-        
         // Does line match criteria?
         if (line.includes("|") || line.match(captionRegex)) {
+            if (line.match(separatorRegex))
+                hasSeparator = true;
+                
             endLine++; // Move down.
             rememberEmptyLine = false;
         // Ignore a single empty line:
