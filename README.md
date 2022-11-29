@@ -61,16 +61,22 @@
 
 ## ✨ Features
 
-- Create new tables with ease.
+### Edit tables
+- Create new tables with a dialog.
 - Format and minify Markdown tables (without breaking MultiMarkdown tables).
 - Add, delete, and move table rows and columns.
 - Align text left, center, or right.
 - Jump to next or previous cell with `Tab` and `Shift` + `Tab`.
-- Convert tables between HTML, Markdown, and CSV.
-- Choose MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
 - Adds hotkeys, [see below](#hotkeys). *(opt-out)*
+- Convert tables between HTML, Markdown, and CSV.
+
+### Configurable
+- Choose between MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
 - Disable features if you don't like them *(toolbar buttons, contextmenu items, hotkeys)*.
   - This also makes this plugin compatible with other plugins that use the same hotkeys or equally named contextmenu items.
+- Change how `Tab` and `Enter` behave
+
+### Markdown-it extension
 - Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*
   - Allows you to place table captions below a table. See [this forum post](https://discourse.joplinapp.org/t/multimarkdown-table-captions-above-table-not-below/2819).
 
@@ -117,8 +123,6 @@ Once you place the I-beam, simply select one of the actions from the menu (see `
 All of these actions can also be performed from the menu (e.g. Tools → Table tools → Row → Insert below).
 
 ## 🐛 Known issues
-
-The following issues seem to correlate with lower-end hardware:
 
 ### Broken dialogs
 
