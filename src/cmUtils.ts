@@ -172,20 +172,19 @@ export function getRangeOfTable(cm: Editor, allowEmptyLine: boolean): { range: R
             if (line.match(separatorRegex))
                 hasSeparator = true;
 
+            if (!line.match(captionRegex))
+                rowIndex++;
+
             startLine--; // Move up.
-            rowIndex++;
             rememberEmptyLine = false;
         // Ignore a single empty line:
         } else if (line.trim() === "" && allowEmptyLine && !rememberEmptyLine) {
             startLine--; // Move up.
-            rowIndex++;
             rememberEmptyLine = true;
         // Break once a line doesn't match criteria:
         } else {
-            if (rememberEmptyLine) {
+            if (rememberEmptyLine)
                 startLine++; // Move back...
-                rowIndex--;
-            }
             break;
         }
     }
@@ -204,7 +203,7 @@ export function getRangeOfTable(cm: Editor, allowEmptyLine: boolean): { range: R
         if (line.includes("|") || line.match(captionRegex)) {
             if (line.match(separatorRegex))
                 hasSeparator = true;
-                
+
             endLine++; // Move down.
             rememberEmptyLine = false;
         // Ignore a single empty line:
