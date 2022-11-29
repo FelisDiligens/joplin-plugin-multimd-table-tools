@@ -1,6 +1,6 @@
 import { Editor } from "codemirror";
 import { Table, TextAlignment } from "md-table-tools";
-import { createPosition, getColumnRanges, getRangeOfTable, isCursorInTable, replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
+import { createPosition, getColumnRanges, getRangeOfTable, isCursorInTable, replaceAllTablesFunc, replaceRange, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getCSVRenderer, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "./tableUtils";
 
 const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
@@ -77,12 +77,38 @@ module.exports = {
                 return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
             }));
 
-            CodeMirror.defineExtension('tableAddRowBelow', replaceRangeFunc(context, async (table, selection, settings) => {
-                const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
-                parsedTable.addRow(selection.row + 1);
-                parsedTable.update();
-                return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
-            }));
+            CodeMirror.defineExtension('tableAddRowBelow', async function() {
+                let cm = this;
+                const settings = await context.postMessage({ name: 'getSettings' });
+                replaceRange(this, context,
+                    (table, selection, settings) => {
+                        const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
+                        parsedTable.addRow(selection.row + 1);
+                        parsedTable.update();
+                        return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                    }, () => {
+                        const cursor = cm.getCursor();
+                        if (cm.getLine(cursor.line + 1).includes("|")) {
+                            let col = getColumnRanges(cm.getLine(cursor.line + 1), createPosition(cursor.line + 1, 0));
+                            if (col.ranges.length > 0) {
+                                cm.focus();
+                                switch (settings.tabBehavior) {
+                                    case "jumpToStart":
+                                        cm.setCursor(col.firstRange.from);
+                                        break;
+                                    case "jumpToEnd":
+                                        cm.setCursor(col.firstRange.to);
+                                        break;
+                                    case "selectContent":
+                                        cm.setSelection(col.firstRange.from, col.firstRange.to);
+                                        break;
+                                }
+                                cm.refresh(); // This is required for the cursor to actually be visible
+                            }
+                        }
+                    }
+                );
+            });
 
             CodeMirror.defineExtension('tableDeleteRow', replaceRangeFunc(context, async (table, selection, settings) => {
                 const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
@@ -127,12 +153,38 @@ module.exports = {
                 return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
             }));
 
-            CodeMirror.defineExtension('tableAddColumnRight', replaceRangeFunc(context, async (table, selection, settings) => {
-                const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
-                parsedTable.addColumn(selection.column + 1);
-                parsedTable.update();
-                return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
-            }));
+            CodeMirror.defineExtension('tableAddColumnRight', async function() {
+                let cm = this;
+                const settings = await context.postMessage({ name: 'getSettings' });
+                replaceRange(this, context,
+                    (table, selection, settings) => {
+                        const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
+                        parsedTable.addColumn(selection.column + 1);
+                        parsedTable.update();
+                        return getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                    }, (selection) => {
+                        const cursor = cm.getCursor();
+                        if (cm.getLine(cursor.line).includes("|")) {
+                            let col = getColumnRanges(cm.getLine(cursor.line), cursor, selection.column);
+                            if (col.ranges.length > 0 && col.nextRange) {
+                                cm.focus();
+                                switch (settings.tabBehavior) {
+                                    case "jumpToStart":
+                                        cm.setCursor(col.nextRange.from);
+                                        break;
+                                    case "jumpToEnd":
+                                        cm.setCursor(col.nextRange.to);
+                                        break;
+                                    case "selectContent":
+                                        cm.setSelection(col.nextRange.from, col.nextRange.to);
+                                        break;
+                                }
+                                cm.refresh(); // This is required for the cursor to actually be visible
+                            }
+                        }
+                    }
+                );
+            });
 
             CodeMirror.defineExtension('tableDeleteColumn', replaceRangeFunc(context, async (table, selection, settings) => {
                 const parsedTable = getMarkdownParser(settings.selectedFormat).parse(table);
@@ -266,11 +318,13 @@ module.exports = {
                                 if (settings.formatOnTab) {
                                     try {
                                         const selection = getRangeOfTable(cm, settings.selectedFormat == "multimd");
-                                        const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
-                                        const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
-                                        if (formattedTable)
-                                            cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
-                                        colIndex = selection.column;
+                                        if (selection !== null) {
+                                            const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
+                                            const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                                            if (formattedTable)
+                                                cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
+                                            colIndex = selection.column;
+                                        }
                                     } catch (err) {
                                         console.error(`Couldn't format table on TAB: ${err}`);
                                     }
@@ -317,11 +371,13 @@ module.exports = {
                                 if (settings.formatOnTab) {
                                     try {
                                         const selection = getRangeOfTable(cm, settings.selectedFormat == "multimd");
-                                        const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
-                                        const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
-                                        if (formattedTable)
-                                            cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
-                                        colIndex = selection.column;
+                                        if (selection !== null) {
+                                            const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
+                                            const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                                            if (formattedTable)
+                                                cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
+                                            colIndex = selection.column;
+                                        }
                                     } catch (err) {
                                         console.error(`Couldn't format table on TAB: ${err}`);
                                     }

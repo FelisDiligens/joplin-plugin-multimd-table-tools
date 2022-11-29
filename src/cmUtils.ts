@@ -273,36 +273,47 @@ export function replaceAllTablesFunc(context, callback): Function {
 }
 
 
-export function replaceRangeFunc(context, callback): Function {
-    return async function() {
-        const settings = await context.postMessage({ name: 'getSettings' });
-        const cursor = this.getCursor();
-        const selection = getRangeOfTable(this, settings.selectedFormat == "multimd");
-        if (selection !== null) {
-            try {
-                const table = this.getRange(selection.range.from, selection.range.to);
-                const result = await callback(table, selection, settings);
-                if (result)
-                this.replaceRange(result, selection.range.from, selection.range.to);
-                this.setCursor(cursor);
-                this.focus();
+export async function replaceRange(cm, context, getNewRange: Function, done: Function = null, error: Function = null) {
+    const settings = await context.postMessage({ name: 'getSettings' });
+    const cursor = cm.getCursor();
+    const selection = getRangeOfTable(cm, settings.selectedFormat == "multimd");
+    if (selection !== null) {
+        try {
+            const table = cm.getRange(selection.range.from, selection.range.to);
+            const result = await getNewRange(table, selection, settings);
+            if (result) {
+                cm.replaceRange(result, selection.range.from, selection.range.to);
+                cm.setCursor(cursor);
+                cm.focus();
             }
-            catch (error) {
-                await context.postMessage({
-                    name: 'alert',
-                    text: error.toString(),
-                    title: "Error"
-                });
-            }
+            if (done)
+                done({ row: selection.row, column: selection.column });
         }
-        else {
+        catch (error) {
             await context.postMessage({
                 name: 'alert',
-                text: 'No table found at the cursors position.',
+                text: error.toString(),
                 title: "Error"
             });
+            if (error)
+                error(error);
         }
-    };
+    }
+    else {
+        await context.postMessage({
+            name: 'alert',
+            text: 'No table found at the cursors position.',
+            title: "Error"
+        });
+        if (error)
+            error(new Error('No table found at the cursors position.'));
+    }
+}
+
+export function replaceRangeFunc(context, callback): Function {
+    return async function() {
+        await replaceRange(this, context, callback);
+    }
 }
 
 export function replaceSelectionFunc(context, callback): Function {
