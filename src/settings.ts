@@ -13,6 +13,7 @@ export async function getSettings() {
 		"allowAddToContextMenu": await joplin.settings.value('tableToolsAddCommandsToContextMenu'),
 		"allowHotkeys": await joplin.settings.value('tableToolsAllowHotkeys'),
 		"tabBehavior": await joplin.settings.value('tableToolsTabBehavior'),
+		"formatOnTab": await joplin.settings.value('tableToolsFormatOnTab'),
 		"enterBehavior": await joplin.settings.value('tableToolsEnterBehavior'),
 	}
 }
@@ -78,6 +79,13 @@ export async function registerAllSettings() {
 				'selectContent': 'Select the contents of the cell', // This is the same behavior that Microsoft Word (and Excel) exhibits.
 				//'disabled': 'Disable this hotkey',
 			},
+		},
+		['tableToolsFormatOnTab']: {
+			public: true,
+			section: section,
+			type: SettingItemType.Bool,
+			value: false,
+			label: "Format table on 'Tab'",
 		},
 		['tableToolsEnterBehavior']: { 
 			public: true,

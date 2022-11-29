@@ -40,19 +40,19 @@ function determineColumnIndex(line: string, ch: number): number {
     return colIndex;
 }
 
-export function getColumnRanges(line: string, cursor: Position) {
+export function getColumnRanges(line: string, cursor: Position, overrideColIndex: number = -1) {
     if (!line.trim().endsWith("|"))
         line += "|";
 
     let ranges: Range[] = [];
-    let cursorColIndex: number;
+    let cursorColIndex: number = overrideColIndex;
     
     let rangeStart = line.trim().startsWith("|") ? line.indexOf("|") + 1 : 0;
     let colIndex = 0;
     let escape = false;
     for (let ch = rangeStart; ch < line.length; ch++) {
         if (line.charAt(ch) == "|" && !escape) {
-            if (rangeStart <= cursor.ch && cursor.ch <= ch) {
+            if (overrideColIndex < 0 && rangeStart <= cursor.ch && cursor.ch <= ch) {
                 cursorColIndex = colIndex;
             }
             ranges.push(createRange(

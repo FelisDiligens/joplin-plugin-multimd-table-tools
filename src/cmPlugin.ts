@@ -1,6 +1,6 @@
 import { Editor } from "codemirror";
 import { Table, TextAlignment } from "md-table-tools";
-import { createPosition, getColumnRanges, isCursorInTable, replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
+import { createPosition, getColumnRanges, getRangeOfTable, isCursorInTable, replaceAllTablesFunc, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getCSVRenderer, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "./tableUtils";
 
 const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
@@ -262,7 +262,21 @@ module.exports = {
                             },
                             // Jump to next cell:
                             "Tab": (cm) => {
-                                let col = getColumnRanges(cm.getLine(cursor.line), cursor);
+                                let colIndex = -1;
+                                if (settings.formatOnTab) {
+                                    try {
+                                        const selection = getRangeOfTable(cm, settings.selectedFormat == "multimd");
+                                        const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
+                                        const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                                        if (formattedTable)
+                                            cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
+                                        colIndex = selection.column;
+                                    } catch (err) {
+                                        console.error(`Couldn't format table on TAB: ${err}`);
+                                    }
+                                }
+
+                                let col = getColumnRanges(cm.getLine(cursor.line), cursor, colIndex);
                                 let range;
                                 // Does next cell exist in row?
                                 if (col.nextRange) {
@@ -299,7 +313,21 @@ module.exports = {
                             },
                             // Jump to previous cell:
                             "Shift-Tab": (cm) => {
-                                let col = getColumnRanges(cm.getLine(cursor.line), cursor);
+                                let colIndex = -1;
+                                if (settings.formatOnTab) {
+                                    try {
+                                        const selection = getRangeOfTable(cm, settings.selectedFormat == "multimd");
+                                        const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
+                                        const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
+                                        if (formattedTable)
+                                            cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
+                                        colIndex = selection.column;
+                                    } catch (err) {
+                                        console.error(`Couldn't format table on TAB: ${err}`);
+                                    }
+                                }
+
+                                let col = getColumnRanges(cm.getLine(cursor.line), cursor, colIndex);
                                 let range;
                                 // Does previous cell exist in row?
                                 if (col.previousRange) {
