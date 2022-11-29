@@ -84,8 +84,12 @@
 *Use `Tab` and `Shift` + `Tab` to jump.*
 <br><br>
 
+![](assets/toolbar-demo.gif)  
+*Some actions are added to the toolbar.*
+<br><br>
+
 ![](assets/menu-demo.gif)  
-*You can find all tools under `Tools` → `Table tools`.*
+*You can find **all** actions under `Tools` → `Table tools`.*
 <br><br>
 
 ![](assets/settings.png)  
@@ -111,11 +115,11 @@
 
 ## ⚡ Usage
 
-> TODO
+All actions are relative to where you placed the I-beam (also called I-cursor) in the text editor. This includes hotkeys.
+
+Once you place the I-beam, simply select one of the actions from the menu (see `Tools` → `Table tools`), click a button from the toolbar, or press a hotkey.
 
 ### Hotkeys
-
-All actions are relative to where you placed the I-beam (also called I-cursor) in the text editor:
 
 | Hotkey                          | Action                           |
 |---------------------------------|----------------------------------|
