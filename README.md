@@ -76,6 +76,10 @@
 
 ## 📸 Screenshots
 
+![](assets/typing-demo.gif)  
+*Use hotkeys while typing.*
+<br><br>
+
 ![](assets/format-demo.gif)  
 *Format and minify tables.*
 <br><br>
