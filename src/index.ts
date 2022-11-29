@@ -21,18 +21,8 @@ joplin.plugins.register({
 
         await registerAllSettings();
         settings = await getSettings();
-        
-        await joplin.contentScripts.register(ContentScriptType.CodeMirrorPlugin, "MultiMarkdownTableTools", "./cmPlugin.js");
 
         await registerAllCommands(settings);
-
-        if (settings.useMarkdownItExtension) {
-            await joplin.contentScripts.register(
-                ContentScriptType.MarkdownItPlugin,
-                'markdown-it-multimd-table',
-                './markdownItExtension.js'
-            );
-        }
 
         await joplin.contentScripts.onMessage("MultiMarkdownTableTools", async (message: any) => {
             switch (message.name) {
@@ -56,5 +46,15 @@ joplin.plugins.register({
                     return "Error: " + message + " is not a valid message";
             }
         });
+        
+        await joplin.contentScripts.register(ContentScriptType.CodeMirrorPlugin, "MultiMarkdownTableTools", "./cmPlugin.js");
+
+        if (settings.useMarkdownItExtension) {
+            await joplin.contentScripts.register(
+                ContentScriptType.MarkdownItPlugin,
+                'markdown-it-multimd-table',
+                './markdownItExtension.js'
+            );
+        }
     },
 });
