@@ -45,7 +45,7 @@
     <tr>
         <td>Other plugins by me:</td>
         <td>
-            <a href="https://github.com/FelisDiligens/joplin-plugin-cmoption">CodeMirror Options</a>
+            <a href="https://github.com/FelisDiligens/joplin-plugin-cmoptions">CodeMirror Options</a>
         </td>
     </tr>
 </table>
