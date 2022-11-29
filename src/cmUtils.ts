@@ -147,6 +147,11 @@ export function getRangesOfAllTables(cm: Editor, allowEmptyLine: boolean): Range
  * @param allowEmptyLine Whether it should ignore a single empty line (MultiMarkdown).
  */
 export function isCursorInTable(cm: Editor, allowEmptyLine: boolean): boolean {
+    const cursor = cm.getCursor();
+    const line = cm.getLine(cursor.line);
+    if (!line.includes("|"))
+        return false;
+
     return getRangeOfTable(cm, allowEmptyLine) !== null;
 }
 
@@ -219,7 +224,7 @@ export function getRangeOfTable(cm: Editor, allowEmptyLine: boolean): { range: R
     }
     endLine--; // Move back...
 
-    if (hasSeparator)
+    if (hasSeparator && (endLine != startLine))
         return {
             "range": createRange(
                 createPosition(startLine, 0),
