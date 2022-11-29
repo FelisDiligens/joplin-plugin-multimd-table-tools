@@ -38,8 +38,9 @@
         <td>Inspired by:</td>
         <td>
             <a href="https://github.com/roman-r-m/joplin-plugin-table-formatter">Table Formatter Plugin</a>,
-            <a href="https://github.com/kensam94/joplin-plugin-eztable">Ez Table</a>
-            <!-- <a href="https://github.com/coderrsid/paste-special">Paste Special Plugin</a> -->
+            <a href="https://github.com/kensam94/joplin-plugin-eztable">Ez Table</a>,
+            <a href="https://github.com/coderrsid/paste-special">Paste Special Plugin</a>,
+            <a href="https://github.com/CalebJohn/joplin-rich-markdown">Rich Markdown</a>
         </td>
     </tr>
     <tr>
@@ -68,6 +69,7 @@
 - Align text left, center, or right.
 - Jump to next or previous cell with `Tab` and `Shift` + `Tab`.
 - Adds hotkeys, [see below](#hotkeys). *(opt-out)*
+- Paste HTML or CSV tables as Markdown.
 - Convert tables between HTML, Markdown, and CSV.
 
 ### Configurable

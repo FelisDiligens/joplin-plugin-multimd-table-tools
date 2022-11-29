@@ -1,5 +1,7 @@
 import joplin from 'api';
 import { MenuItem, MenuItemLocation, ToolbarButtonLocation } from 'api/types';
+import { getSettings } from './settings';
+import { getMarkdownRenderer, parseTable } from './tableUtils';
 
 interface Command {
     name: string,
@@ -116,6 +118,36 @@ const commands : Command[] = [
             asToolbarButton: false
         },
         execute: editorExecCommand("convertSelectionToCSVTable")
+    },
+    {
+        name: "pasteAsMarkdownTable",
+        label: "Paste table as Markdown",
+        iconName: null,
+        accelerator: null,
+        add: {
+            toContextMenu: false,
+            toToolsMenu: "tableToolsPaste",
+            asToolbarButton: false
+        },
+        execute: async () => {
+            let table: string = await joplin.clipboard.readText();
+            
+			// if clipboard is empty, skip
+			if (!table?.length)
+                return;
+            
+            const settings = await getSettings();
+            let intermediaryTable = parseTable(table, settings.selectedFormat);
+
+            // If table couldn't be parsed, skip
+            if (intermediaryTable == null)
+                return;
+
+            // Render to markdown and paste into editor:
+            let mdTable = getMarkdownRenderer(settings.selectedFormat, true).render(intermediaryTable);
+			await joplin.commands.execute("insertText", mdTable);
+			await joplin.commands.execute('editor.focus');
+        }
     },
     {
         name: "tableAddRowAbove",
@@ -319,6 +351,12 @@ export function registerAllCommands(settings) {
 				label: 'Convert',
 				submenu: commands
                          .filter(command => command.add.toToolsMenu == "tableToolsConvert")
+                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+			},
+            {
+				label: 'Paste',
+				submenu: commands
+                         .filter(command => command.add.toToolsMenu == "tableToolsPaste")
                          .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
         ],
