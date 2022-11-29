@@ -125,13 +125,13 @@ const commands : Command[] = [
         iconName: null,
         accelerator: null,
         add: {
-            toContextMenu: false,
+            toContextMenu: true,
             toToolsMenu: "tableToolsPaste",
             asToolbarButton: false
         },
         execute: async () => {
             let table: string = await joplin.clipboard.readText();
-            
+
 			// if clipboard is empty, skip
 			if (!table?.length)
                 return;
@@ -239,7 +239,7 @@ const commands : Command[] = [
         iconName: null,
         accelerator: null,
         add: {
-            toContextMenu: false,
+            toContextMenu: true,
             toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
