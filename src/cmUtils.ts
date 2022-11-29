@@ -285,6 +285,7 @@ export function replaceRangeFunc(context, callback): Function {
                 if (result)
                 this.replaceRange(result, selection.range.from, selection.range.to);
                 this.setCursor(cursor);
+                this.focus();
             }
             catch (error) {
                 await context.postMessage({
@@ -312,6 +313,7 @@ export function replaceSelectionFunc(context, callback): Function {
             const result = await callback(table, settings);
             if (result)
                 this.replaceSelection(result);
+            this.focus();
         }
         catch (error) {
             await context.postMessage({
