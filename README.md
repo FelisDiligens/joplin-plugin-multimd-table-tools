@@ -75,29 +75,9 @@
   - Allows you to place table captions below a table. See [this forum post](https://discourse.joplinapp.org/t/multimarkdown-table-captions-above-table-not-below/2819).
 
 ## 📸 Screenshots
+![](assets/typing-demo.gif)
 
-![](assets/typing-demo.gif)  
-*Use hotkeys while typing.*
-<br><br>
-
-![](assets/format-demo.gif)  
-*Format and minify tables.*
-<br><br>
-
-![](assets/tab-demo.gif)  
-*Use `Tab` and `Shift` + `Tab` to jump.*
-<br><br>
-
-![](assets/toolbar-demo.gif)  
-*Some actions are added to the toolbar.*
-<br><br>
-
-![](assets/menu-demo.gif)  
-*You can find **all** actions under `Tools` → `Table tools`.*
-<br><br>
-
-![](assets/settings.png)  
-*Customize it to your taste.*
+[See more screenshots!](Screenshots.md)
 
 ## ⚙️ Installation
 
