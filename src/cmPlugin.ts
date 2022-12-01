@@ -301,6 +301,11 @@ module.exports = {
                         cm.setOption("extraKeys", {
                             // Insert <br> instead of normal newline:
                             "Enter": (cm) => {
+                                if (settings.enterBehavior == "disabled") {
+                                    cm.replaceSelection('\n');
+                                    return;
+                                }
+
                                 var line = cm.getLine(cursor.line);
                                 var substr = line.substring(cursor.ch, line.length);
 
@@ -314,6 +319,11 @@ module.exports = {
                             },
                             // Jump to next cell:
                             "Tab": (cm) => {
+                                if (settings.tabBehavior == "disabled") {
+                                    cm.replaceSelection('\t');
+                                    return;
+                                }
+
                                 let colIndex = -1;
                                 if (settings.formatOnTab) {
                                     try {
@@ -367,6 +377,11 @@ module.exports = {
                             },
                             // Jump to previous cell:
                             "Shift-Tab": (cm) => {
+                                if (settings.tabBehavior == "disabled") {
+                                    cm.replaceSelection('\t');
+                                    return;
+                                }
+
                                 let colIndex = -1;
                                 if (settings.formatOnTab) {
                                     try {

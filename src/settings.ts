@@ -77,7 +77,7 @@ export async function registerAllSettings() {
 				'jumpToStart': 'Jump to the start of the cell',
 				'jumpToEnd': 'Jump to the end of the cell',
 				'selectContent': 'Select the contents of the cell', // This is the same behavior that Microsoft Word (and Excel) exhibits.
-				//'disabled': 'Disable this hotkey',
+				'disabled': 'Insert tab (Disable this hotkey)',
 			},
 		},
 		['tableToolsFormatOnTab']: {
@@ -98,7 +98,7 @@ export async function registerAllSettings() {
 			options: {
 				'insertBrTag': 'Insert <br> tag',
 				//'addRowBelow': 'Add new row below',
-				'default': 'Insert newline',
+				'disabled': 'Insert newline (Disable this hotkey)',
 			},
 		},
 		['tableToolsUseMarkdownItExtension']: {
