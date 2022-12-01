@@ -3,11 +3,19 @@ import { MenuItem, MenuItemLocation, ToolbarButtonLocation } from 'api/types';
 import { getSettings } from './settings';
 import { getMarkdownRenderer, parseTable } from './tableUtils';
 
+/** Only affects context menu items */
+enum CommandCondition {
+    None,
+    CursorInTable,
+    Selection
+}
+
 interface Command {
     name: string,
     label: string,
     iconName: string,
     accelerator: string,
+    condition: CommandCondition,
     add: {
         toContextMenu: boolean,
         toToolsMenu: string,
@@ -33,6 +41,7 @@ const commands : Command[] = [
             toToolsMenu: "tableTools",
             asToolbarButton: true
         },
+        condition: CommandCondition.None,
         execute: editorExecCommand("createTable")
     },
     {
@@ -45,6 +54,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsFormat",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("formatTable")
     },
     {
@@ -57,6 +67,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsFormat",
             asToolbarButton: true
         },
+        condition: CommandCondition.None,
         execute: editorExecCommand("formatAllTables")
     },
     {
@@ -69,6 +80,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsFormat",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("minifyTable")
     },
     {
@@ -81,6 +93,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsFormat",
             asToolbarButton: false
         },
+        condition: CommandCondition.None,
         execute: editorExecCommand("minifyAllTables")
     },
     {
@@ -93,6 +106,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsConvert",
             asToolbarButton: false
         },
+        condition: CommandCondition.Selection,
         execute: editorExecCommand("convertSelectionToMarkdownTable")
     },
     {
@@ -105,6 +119,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsConvert",
             asToolbarButton: false
         },
+        condition: CommandCondition.Selection,
         execute: editorExecCommand("convertSelectionToHTMLTable")
     },
     {
@@ -117,6 +132,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsConvert",
             asToolbarButton: false
         },
+        condition: CommandCondition.Selection,
         execute: editorExecCommand("convertSelectionToCSVTable")
     },
     {
@@ -129,6 +145,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsPaste",
             asToolbarButton: false
         },
+        condition: CommandCondition.None,
         execute: async () => {
             let table: string = await joplin.clipboard.readText();
 
@@ -159,6 +176,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsRow",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableAddRowAbove")
     },
     {
@@ -171,6 +189,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsRow",
             asToolbarButton: true
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableAddRowBelow")
     },
     {
@@ -183,6 +202,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsRow",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableMoveRow")
     },
     {
@@ -195,6 +215,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsRow",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableDeleteRow")
     },
     {
@@ -207,6 +228,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableAddColumnLeft")
     },
     {
@@ -219,6 +241,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsColumn",
             asToolbarButton: true
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableAddColumnRight")
     },
     {
@@ -231,6 +254,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableMoveColumn")
     },
     {
@@ -243,6 +267,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsColumn",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableDeleteColumn")
     },
     {
@@ -255,6 +280,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsText",
             asToolbarButton: true
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableTextAlignLeft")
     },
     {
@@ -267,6 +293,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsText",
             asToolbarButton: true
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableTextAlignCenter")
     },
     {
@@ -279,6 +306,7 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsText",
             asToolbarButton: true
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableTextAlignRight")
     },
     {
@@ -291,12 +319,14 @@ const commands : Command[] = [
             toToolsMenu: "tableToolsText",
             asToolbarButton: false
         },
+        condition: CommandCondition.CursorInTable,
         execute: editorExecCommand("tableTextAlignClear")
     }
 ];
 
-export function registerAllCommands(settings) {
+export async function registerAllCommands(settings) {
     commands.forEach(command => {
+        // Register each command:
         joplin.commands.register({
             name: command.name,
             label: command.label,
@@ -305,18 +335,13 @@ export function registerAllCommands(settings) {
             execute: command.execute
         });
 
-        if (command.add.toContextMenu && settings.allowAddToContextMenu) {
-            if (command.accelerator !== null && settings.allowHotkeys)
-                joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu, { accelerator: command.accelerator});
-            else
-                joplin.views.menuItems.create(command.label, command.name, MenuItemLocation.EditorContextMenu);
-        }
-
+        // Add toolbar buttons:
         if (command.add.asToolbarButton && settings.allowAddToToolbar) {
             joplin.views.toolbarButtons.create(command.label, command.name, ToolbarButtonLocation.EditorToolbar);
         }
     });
     
+    // Add all actions to Tools -> Table tools -> *
     joplin.views.menus.create(
         "tableTools",
         "Table tools",
@@ -362,4 +387,53 @@ export function registerAllCommands(settings) {
 			},
         ],
         MenuItemLocation.Tools);
+
+    // Add (and filter) context menu items:
+    await joplin.workspace.filterEditorContextMenu(async (object: any) => {
+        const newItems: MenuItem[] = [];
+
+        let inTable = await joplin.commands.execute('editor.execCommand', {
+            name: 'isCursorInTable',
+        });
+
+        let hasSelection = await joplin.commands.execute('editor.execCommand', {
+            name: 'hasSelection',
+        });
+
+        if (settings.allowAddToContextMenu) {
+            commands.forEach(command => {
+                if (command.add.toContextMenu) {
+                    // Filter command depending on chosen condition:
+                    if (command.condition == CommandCondition.CursorInTable && !inTable)
+                        return;
+                    if (command.condition == CommandCondition.Selection && !hasSelection)
+                        return;
+
+                    // Add command to context menu:
+                    if (command.accelerator !== null && settings.allowHotkeys) {
+                        newItems.push({
+                            label: command.label,
+                            commandName: command.name,
+                            accelerator: command.accelerator
+                        });
+                    } else {
+                        newItems.push({
+                            label: command.label,
+                            commandName: command.name
+                        });
+                    }
+                }
+            });
+        }
+
+        if (newItems.length) {
+            newItems.splice(0, 0, {
+                type: 'separator',
+            });
+
+            object.items = object.items.concat(newItems);
+        }
+
+        return object;
+    });
 }

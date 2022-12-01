@@ -284,6 +284,16 @@ module.exports = {
                         title: "Error"
                     });
             }));
+            
+            CodeMirror.defineExtension('isCursorInTable', async function() {
+                const settings = await context.postMessage({ name: 'getSettings' });
+                return isCursorInTable(this, settings.selectedFormat == "multimd");
+            });
+            
+            CodeMirror.defineExtension('hasSelection', async function() {
+                const cm = this as Editor;
+                return !!cm.getSelection();
+            });
 
             /*
                 Hotkeys:
