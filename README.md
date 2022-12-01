@@ -76,7 +76,7 @@
 - Choose between MultiMarkdown or GitHub Flavored Markdown table format in the settings. *(personal preference, MultiMarkdown is default)*
 - Disable features if you don't like them *(toolbar buttons, contextmenu items, hotkeys)*.
   - This also makes this plugin compatible with other plugins that use the same hotkeys or equally named contextmenu items.
-- Change how `Tab` and `Enter` behave
+- Change how `Tab` and `Enter` behave or disable them separately.
 
 ### Markdown-it extension
 - Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*
