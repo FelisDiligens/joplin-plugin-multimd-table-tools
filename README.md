@@ -40,7 +40,8 @@
             <a href="https://github.com/roman-r-m/joplin-plugin-table-formatter">Table Formatter Plugin</a>,
             <a href="https://github.com/kensam94/joplin-plugin-eztable">Ez Table</a>,
             <a href="https://github.com/coderrsid/paste-special">Paste Special Plugin</a>,
-            <a href="https://github.com/CalebJohn/joplin-rich-markdown">Rich Markdown</a>
+            <a href="https://github.com/CalebJohn/joplin-rich-markdown">Rich Markdown</a>,
+            <a href="https://github.com/tessus/joplin-plugin-menu-shortcut-toolbar">Menu items, Shortcuts, Toolbar icons</a>
         </td>
     </tr>
     <tr>

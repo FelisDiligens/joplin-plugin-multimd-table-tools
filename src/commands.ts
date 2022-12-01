@@ -300,6 +300,7 @@ export function registerAllCommands(settings) {
         joplin.commands.register({
             name: command.name,
             label: command.label,
+            enabledCondition: 'markdownEditorPaneVisible && !richTextEditorVisible',
             iconName: command.iconName,
             execute: command.execute
         });
