@@ -185,6 +185,14 @@ To build the plugin, simply run `npm run dist`.
 
 The project is setup to use TypeScript, although you can change the configuration to use plain JavaScript.
 
+### Workaround: Building fails on NodeJS LTS
+
+```bash
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+> Source: https://stackoverflow.com/a/69746937
+
+
 ## Updating the plugin framework
 
 To update the plugin framework, run `npm run update`.
