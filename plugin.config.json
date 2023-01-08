@@ -6,6 +6,14 @@
 		"dialogs.ts",
 		"markdownItExtension.ts",
 		"settings.ts",
-		"tableUtils.ts"
+		"tableUtils.ts",
+		"tables/common.ts",
+		"tables/csvTable.ts",
+		"tables/gfmTable.ts",
+		"tables/htmlTable.ts",
+		"tables/multiMarkdownTable.ts",
+		"tables/table.ts",
+		"tables/tableParser.ts",
+		"tables/tableRenderer.ts"
 	]
 }
