@@ -1,5 +1,3 @@
-> **Warning** This plugin is currently in development and isn't released yet.
-
 <table>
     <tr>
         <td colspan="3" align="center">
@@ -20,9 +18,8 @@
     </tr>
     <tr>
         <td colspan="2">
-            <!-- Placeholder -->
-            <img style="vertical-align: bottom" src="https://img.shields.io/badge/version-1.0.0-white?style=for-the-badge">
-            <img style="vertical-align: bottom" src="https://img.shields.io/badge/downloads-0-white?style=for-the-badge">
+            <img src="https://img.shields.io/npm/v/joplin-plugin-multimd-table-tools?label=Version&style=for-the-badge">
+            <img src="https://img.shields.io/npm/dt/joplin-plugin-multimd-table-tools?style=for-the-badge">
         </td>
     </tr>
     <tr>
