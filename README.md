@@ -152,7 +152,6 @@ If that happens to you, click `Format all tables` twice or format each table wit
 This can happen sometimes, especially if you change settings.  
 Try to restart Joplin.
 
-<!--
 ## ☕ I can haz coffee?
 
 ![](./assets/i-can-haz-cheezburger.jpg)
@@ -160,7 +159,6 @@ Try to restart Joplin.
 If you like this plugin, consider to support me on ☕ ko-fi:
 
 [![](assets/buy-me-a-coffee.png)](https://ko-fi.com/felisdiligens)
--->
 
 ## Development
 
