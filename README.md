@@ -5,7 +5,7 @@
         </td>
     </tr>
     <tr>
-        <td rowspan="6" align="center">
+        <td rowspan="7" align="center">
             <img src="./assets/joplin.svg" width="64"><br>
             <p>
                 <strong>Joplin Plugin</strong><br>
@@ -20,6 +20,17 @@
         <td colspan="2">
             <img src="https://img.shields.io/npm/v/joplin-plugin-multimd-table-tools?label=Version&style=for-the-badge">
             <img src="https://img.shields.io/npm/dt/joplin-plugin-multimd-table-tools?style=for-the-badge">
+        </td>
+    </tr>
+    <tr>
+        <td>Links:</td>
+        <td>
+            <a href="https://www.npmjs.com/package/joplin-plugin-multimd-table-tools">
+                <img src="https://img.shields.io/badge/-npm-9b3030?style=for-the-badge&logo=npm" alt="NPM">
+            </a>
+            <a href="https://discourse.joplinapp.org/t/multimarkdown-table-tools-plugin/29044">
+                <img src="https://img.shields.io/badge/-Joplin%20Forum-0457ba?style=for-the-badge&logo= data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw1AUhU9TpVIqDnaQ4pChdbIgKuIoVSyChdJWaNXB5KV/0KQhSXFxFFwLDv4sVh1cnHV1cBUEwR8QVxcnRRcp8b6k0CLGC4/3cd49h/fuA4RWjalm3wSgapaRSSbEfGFVDLzChyACiCEiMVNPZRdz8Kyve+qmuovzLO++P2tQKZoM8InEc0w3LOIN4plNS+e8TxxmFUkhPiceN+iCxI9cl11+41x2WOCZYSOXmScOE4vlHpZ7mFUMlXiaOKqoGuULeZcVzluc1VqDde7JXxgqaitZrtMaRRJLSCENETIaqKIGC3HaNVJMZOg84eGPOP40uWRyVcHIsYA6VEiOH/wPfs/WLE1NukmhBND/YtsfMSCwC7Sbtv19bNvtE8D/DFxpXX+9Bcx+kt7satEjYGgbuLjuavIecLkDjDzpkiE5kp+WUCoB72f0TQVg+BYIrrlz65zj9AHI0ayWb4CDQ2CsTNnrHu8e6J3bvz2d+f0AW/xynt63yu8AAAAGYktHRAAwADAAMFrQ1sUAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfnAQoHJSqjT0f6AAADqklEQVRYw72XXWgUVxTH//fuJLtx82HS+pnFkjUxQmmkICoY15WCtAhWQhTxKRh9kT4UfBAKBdGX1pdSkhc/g7QPthaKivYhimn9gBY0xu+oUdBm6UbdTddNdjLZOceHZNfM7MzkmkTPy15m7zm/M/d83DMCNqlpz0SIqYUZUSZaAOYAM4OJAGYwM0A09jv+fOLavoeZdSaKgbmLwR3J7+svT+SJ3CJ8kCtMY+QYg5rsxqYBd9iP36ShtSba6lJ5B8IHuYJG9UvE/Mm7hOf3MPfIrD+SaKtLSQAwjZFj7xEOJlqWFcNHAEDUtGciJvOfU4GXFgFHN1dBCIz9l4snj68YeDmUxY6f+52dZ27UiKkFjCm9ud8nsHZxAF7y/FXW/eQILZKBtVM/dkwqPH4ijvqgqMYmLZxqzP8fzqL1xAAWVWr4dn0VpHgDTg6b2P/HAPqTo145E9KmU+cGM07dSgNEaG4I4uMF/rwDnffS6LiSmCxhA3Kmst20hSNLavpypkqtICGsZeeqL2eszlHAV9KXM9VkCh1Q09dU4cU+4IulQURrA6iu0GCYjDsxHfvPDYztcSpABec1FfiacABtTR9iYYVmQXxa7ce+s3GXHIDSyWmTwdfXl+D4tnnwSe8m4xQClbtBesHnBCUObZnrCM+Dcvo2Ebk88IAXhMAes9ZV5ZhVLCyGe+MjOH0zhYAmsCwUeGPY5gApwC0hcEqYSNh60fS9MBD94TF0gxzDViCTwF0bUT4EpT6Lva7eIXW4SyOy86RXqQwb1uQKzylyT1iHEKjMGNIrW68/0y1G19QGsbJmlkufEIVlqHDNS69S+fXaoMWmJgV+2v4R1tUHLcYaQiVYMt+aL09f6EozhuZVKn89HMKF+2l8trQ0b3humYbfd9Xinydp/N2XRnmJD83Lq+CT1hM4fzuhNGOID77py4Ao4DZAzi/zofPrxQhVFkFVuu4O4vPvelSueV0yUcxjekVs0MDG9j48iOtK8FhyBDsP31edMf6VYO5yg+fWj+IZRA/04sfOOPRRcoV33kqicW83nj7PKM0YgvmiqNzT2wiTLrnB7W9SXiKxoWE2VtSUIlRVjFQmi0f/ZXC2+yWuPU693XQleLUAgNm7750EU/N0Pzrecrr6BWc2bZUAIA2tFcw97w0OvgEhdgKABIBEW11KZv0RZj75zuHEJwARwekvX1m+jnNS9lX3apjcwqB1IKrm8bF9GnCdifsF8UWS1IFTm65O5L0Gnxwd5GMpF1cAAAAASUVORK5CYII=" alt="Joplin Forum">
+            </a>
         </td>
     </tr>
     <tr>
