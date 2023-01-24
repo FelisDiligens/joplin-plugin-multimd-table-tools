@@ -5,7 +5,7 @@
         </td>
     </tr>
     <tr>
-        <td rowspan="7" align="center">
+        <td width="225px" rowspan="7" align="center">
             <img src="./assets/joplin.svg" width="64"><br>
             <p>
                 <strong>Joplin Plugin</strong><br>
@@ -55,6 +55,7 @@
     <tr>
         <td>Other plugins by me:</td>
         <td>
+            <a href="https://github.com/FelisDiligens/joplin-plugin-search-and-replace">Search & Replace</a>,
             <a href="https://github.com/FelisDiligens/joplin-plugin-cmoptions">CodeMirror Options</a>
         </td>
     </tr>
