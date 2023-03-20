@@ -9,7 +9,7 @@ module.exports = {
                     rowspan:    true,
                     headerless: true,
                     multibody:  true,
-                    aotolabel:  true,
+                    autolabel:  true,
                 });
             },
         }
