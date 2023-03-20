@@ -84,7 +84,7 @@ export async function registerAllSettings() {
 			public: true,
 			section: section,
 			type: SettingItemType.Bool,
-			value: false,
+			value: true,
 			label: "Format table on 'Tab'",
 		},
 		['tableToolsEnterBehavior']: { 
