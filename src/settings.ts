@@ -7,7 +7,6 @@ import { SettingItemType } from 'api/types';
 export async function getSettings() {
 	return {
 		"selectedFormat": await joplin.settings.value('tableToolsSelectedFormat'),
-		"useMarkdownItExtension": await joplin.settings.value('tableToolsUseMarkdownItExtension'),
 		"useNativeDialogs": await joplin.settings.value('tableToolsDebugUseNativeDialogs'),
 		"allowAddToToolbar": await joplin.settings.value('tableToolsAddButtonsToToolbar'),
 		"allowAddToContextMenu": await joplin.settings.value('tableToolsAddCommandsToContextMenu'),
@@ -100,14 +99,6 @@ export async function registerAllSettings() {
 				//'addRowBelow': 'Add new row below',
 				'disabled': 'Insert newline (Disable this hotkey)',
 			},
-		},
-		['tableToolsUseMarkdownItExtension']: {
-			public: true,
-			section: section,
-			type: SettingItemType.Bool,
-			value: false,
-			label: 'Use forked MultiMarkdown table extension',
-			description: 'Forked from "markdown-it-multimd-table" version 4.2.0 by redbug312. The fork adds caption-side CSS. ⚠ Please disable the built-in MultiMarkdown table extension before enabling this.',
 		},
 		['tableToolsDebugUseNativeDialogs']: {
 			advanced: true,

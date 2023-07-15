@@ -1,7 +1,7 @@
 import joplin from 'api';
 import { ContentScriptType } from 'api/types';
 import { registerAllCommands } from './commands';
-import { Dialog, Dialogs } from './dialogs';
+import { Dialogs } from './dialogs';
 import { getSettings, registerAllSettings } from './settings';
 
 let settings;
@@ -48,13 +48,5 @@ joplin.plugins.register({
         });
         
         await joplin.contentScripts.register(ContentScriptType.CodeMirrorPlugin, "MultiMarkdownTableTools", "./cmPlugin.js");
-
-        if (settings.useMarkdownItExtension) {
-            await joplin.contentScripts.register(
-                ContentScriptType.MarkdownItPlugin,
-                'markdown-it-multimd-table',
-                './markdownItExtension.js'
-            );
-        }
     },
 });

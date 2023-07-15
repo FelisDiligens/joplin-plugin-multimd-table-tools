@@ -1,13 +1,14 @@
 {
 	"manifest_version": 1,
 	"id": "joplin.plugin.MultiMarkdownTableTools",
-	"app_min_version": "2.8",
-	"version": "1.0.1",
+	"app_min_version": "2.12",
+	"version": "1.1.0",
 	"name": "MultiMarkdown Table Tools",
 	"description": "A collection of tools to make editing tables easier. Also supports GitHub Flavored Markdown!",
 	"author": "FelisDiligens",
 	"homepage_url": "https://github.com/FelisDiligens/joplin-plugin-multimd-table-tools",
 	"repository_url": "https://github.com/FelisDiligens/joplin-plugin-multimd-table-tools",
 	"keywords": ["multimarkdown", "multimd", "markdown", "md", "html", "table", "format", "convert"],
-	"categories": []
+	"categories": [],
+	"screenshots": []
 }

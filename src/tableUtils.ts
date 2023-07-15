@@ -1,11 +1,17 @@
-// import { MultiMarkdownTableParser, MinifiedMultiMarkdownTableRenderer, PrettyMultiMarkdownTableRenderer, TableParser, TableRenderer, GitHubFlavoredMarkdownTableParser, GitHubFlavoredMarkdownTableRenderer, HTMLTableParser, HTMLTableRenderer, CSVTableParser, CSVTableRenderer, Table } from 'md-table-tools';
-import { Table } from "md-table-tools";
-import { TableParser } from "md-table-tools";
-import { TableRenderer } from "md-table-tools";
-import { MultiMarkdownTableParser, MinifiedMultiMarkdownTableRenderer, PrettyMultiMarkdownTableRenderer } from "md-table-tools";
-import { HTMLTableParser, HTMLTableRenderer } from "md-table-tools";
-import { GitHubFlavoredMarkdownTableParser, GitHubFlavoredMarkdownTableRenderer } from "md-table-tools";
-import { CSVTableParser, CSVTableRenderer } from "md-table-tools";
+import {
+    CSVTableParser,
+    CSVTableRenderer,
+    GitHubFlavoredMarkdownTableParser,
+    GitHubFlavoredMarkdownTableRenderer,
+    HTMLTableParser,
+    HTMLTableRenderer,
+    MinifiedMultiMarkdownTableRenderer,
+    MultiMarkdownTableParser,
+    PrettyMultiMarkdownTableRenderer,
+    Table,
+    TableParser,
+    TableRenderer,
+} from "@felisdiligens/md-table-tools";
 
 const multimdParser = new MultiMarkdownTableParser();
 const multimdMinifiedRenderer = new MinifiedMultiMarkdownTableRenderer();

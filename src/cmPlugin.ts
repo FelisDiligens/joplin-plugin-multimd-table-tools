@@ -1,5 +1,5 @@
+import { Table, TextAlignment } from "@felisdiligens/md-table-tools";
 import { Editor } from "codemirror";
-import { Table, TextAlignment } from "md-table-tools";
 import { createPosition, getColumnRanges, getRangeOfTable, isCursorInTable, replaceAllTablesFunc, replaceRange, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getCSVRenderer, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "./tableUtils";
 
