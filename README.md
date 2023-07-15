@@ -87,10 +87,6 @@
   - This also makes this plugin compatible with other plugins that use the same hotkeys or equally named contextmenu items.
 - Change how `Tab` and `Enter` behave or disable them separately.
 
-### Markdown-it extension
-- Enable a forked version of the `markdown-it-multimd-table` extension in the settings. *(opt-in)*
-  - Allows you to place table captions below a table. See [this forum post](https://discourse.joplinapp.org/t/multimarkdown-table-captions-above-table-not-below/2819).
-
 ## 📸 Screenshots
 ![](assets/typing-demo.gif)
 
