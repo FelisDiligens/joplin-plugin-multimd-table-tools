@@ -1,5 +1,5 @@
 {
-  "name": "joplin-plugin-multimarkdown-table-tools",
+  "name": "joplin-plugin-multimd-table-tools",
   "version": "1.1.0",
   "scripts": {
     "dist": "webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
