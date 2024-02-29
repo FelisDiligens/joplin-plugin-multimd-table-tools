@@ -85,7 +85,10 @@ export function getColumnRanges(line: string, cursor: Position, overrideColIndex
  */
 export function getRangesOfAllTables(cm: Editor, allowEmptyLine: boolean): Range[] {
     let ranges: Range[] = [];
-    const doc = cm.getDoc();
+
+    // In some versions of Joplin's beta editor, .getDoc is undefined.
+    const doc = cm.getDoc?.() ?? cm;
+
     let cursor = { } as Position;
 
     let tableStartLine = -1;
