@@ -47,6 +47,6 @@ joplin.plugins.register({
             }
         });
         
-        await joplin.contentScripts.register(ContentScriptType.CodeMirrorPlugin, "MultiMarkdownTableTools", "./cmPlugin.js");
+        await joplin.contentScripts.register(ContentScriptType.CodeMirrorPlugin, "MultiMarkdownTableTools", "./cmPlugin/index.js");
     },
 });

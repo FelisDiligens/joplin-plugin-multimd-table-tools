@@ -24,6 +24,10 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function isCodeMirror6(cm: Editor) {
+    return !!(cm as any).cm6;
+}
+
 function determineColumnIndex(line: string, ch: number): number {
     let row = line.substring(0, ch).trim();
     if (row.startsWith("|"))
