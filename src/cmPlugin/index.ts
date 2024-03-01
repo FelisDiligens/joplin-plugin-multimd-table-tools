@@ -1,10 +1,10 @@
 import { Editor } from "codemirror";
-import { EditorView, keymap } from "@codemirror/view";
+import type { EditorView } from "@codemirror/view";
 import { Table, TextAlignment } from "@felisdiligens/md-table-tools";
 import { createPosition, getColumnRanges, isCodeMirror6, isCursorInTable, replaceAllTablesFunc, replaceRange, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
 import { getCSVRenderer, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "../tableUtils";
 import makeKeyCommands from "./makeTableKeyCommands";
-import { Prec } from "@codemirror/state";
+import { requireCodeMirrorState, requireCodeMirrorView } from "./cmDynamicRequire";
 
 
 module.exports = {
@@ -307,6 +307,10 @@ module.exports = {
 
                 if (isCodeMirror6(cm)) {
                     const editorControl = cm as any;
+
+                    // Dynamic require: Non-dynamic requires of these may break in CodeMirror 5.
+                    const { Prec } = requireCodeMirrorState();
+                    const { keymap } = requireCodeMirrorView();
 
                     // Convert all key commands into CodeMirror6-style keybindings.
                     const keybindings = Object.entries(keyCommands).map(([name, command]) => ({
