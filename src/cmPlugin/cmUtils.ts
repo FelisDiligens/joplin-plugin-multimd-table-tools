@@ -24,6 +24,10 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function isCodeMirror6(cm: Editor) {
+    return !!(cm as any).cm6;
+}
+
 function determineColumnIndex(line: string, ch: number): number {
     let row = line.substring(0, ch).trim();
     if (row.startsWith("|"))
@@ -85,7 +89,10 @@ export function getColumnRanges(line: string, cursor: Position, overrideColIndex
  */
 export function getRangesOfAllTables(cm: Editor, allowEmptyLine: boolean): Range[] {
     let ranges: Range[] = [];
-    const doc = cm.getDoc();
+
+    // In some versions of Joplin's beta editor, .getDoc is undefined.
+    const doc = cm.getDoc?.() ?? cm;
+
     let cursor = { } as Position;
 
     let tableStartLine = -1;

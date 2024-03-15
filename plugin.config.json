@@ -1,7 +1,6 @@
 {
 	"extraScripts": [
-		"cmPlugin.ts",
-		"cmUtils.ts",
+		"cmPlugin/index.ts",
 		"commands.ts",
 		"dialogs.ts",
 		"settings.ts",

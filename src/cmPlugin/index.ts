@@ -1,9 +1,11 @@
 import { Editor } from "codemirror";
+import type { EditorView } from "@codemirror/view";
 import { Table, TextAlignment } from "@felisdiligens/md-table-tools";
-import { createPosition, getColumnRanges, getRangeOfTable, isCursorInTable, replaceAllTablesFunc, replaceRange, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
-import { getCSVRenderer, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "./tableUtils";
+import { createPosition, getColumnRanges, isCodeMirror6, isCursorInTable, replaceAllTablesFunc, replaceRange, replaceRangeFunc, replaceSelectionFunc } from "./cmUtils";
+import { getCSVRenderer, getHTMLRenderer, getMarkdownParser, getMarkdownRenderer, parseTable } from "../tableUtils";
+import makeKeyCommands from "./makeTableKeyCommands";
+import { requireCodeMirrorState, requireCodeMirrorView } from "./cmDynamicRequire";
 
-const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
 
 module.exports = {
     default: function(context) {
@@ -299,156 +301,47 @@ module.exports = {
                 Hotkeys:
                 Tab, Shift+Tab, Enter
             */
-            CodeMirror.defineOption('tableToolsHotkeys', false, (cm: Editor, value: boolean) => {
-                cm.on('cursorActivity', async () => {
-                    const settings = await context.postMessage({ name: 'getSettings' });
-                    var insideTable = isCursorInTable(cm, settings.selectedFormat == "multimd");
+            CodeMirror.defineOption('tableToolsHotkeys', false, async (cm: Editor, value: boolean) => {
+                const settings = await context.postMessage({ name: 'getSettings' });
+                const keyCommands = makeKeyCommands(settings);
 
-                    // if the cursor is in the table and hotkeys are allowed:
-                    if (insideTable && settings.allowHotkeys) {
-                        const cursor = cm.getCursor();
+                if (isCodeMirror6(cm)) {
+                    const editorControl = cm as any;
 
-                        cm.setOption("extraKeys", {
-                            // Insert <br> instead of normal newline:
-                            "Enter": (cm) => {
-                                if (settings.enterBehavior == "disabled") {
-                                    cm.replaceSelection('\n');
-                                    return;
-                                }
+                    // Dynamic require: Non-dynamic requires of these may break in CodeMirror 5.
+                    const { Prec } = requireCodeMirrorState();
+                    const { keymap } = requireCodeMirrorView();
 
-                                var line = cm.getLine(cursor.line);
-                                var substr = line.substring(cursor.ch, line.length);
+                    // Convert all key commands into CodeMirror6-style keybindings.
+                    const keybindings = Object.entries(keyCommands).map(([name, command]) => ({
+                        key: name,
+                        run: (_view: EditorView) => {
+                            const insideTable = isCursorInTable(cm, settings.selectedFormat == "multimd");
 
-                                // Check if the cursor is within the table:
-                                if (settings.enterBehavior == "insertBrTag" &&
-                                    (!line.trim().startsWith("|") || (substr.includes("|") && cursor.ch != 0))) {
-                                    cm.replaceSelection('<br>');
-                                } else {
-                                    cm.replaceSelection('\n');
-                                }
-                            },
-                            // Jump to next cell:
-                            "Tab": (cm) => {
-                                if (settings.tabBehavior == "disabled") {
-                                    cm.replaceSelection('\t');
-                                    return;
-                                }
-
-                                let colIndex = -1;
-                                if (settings.formatOnTab) {
-                                    try {
-                                        const selection = getRangeOfTable(cm, settings.selectedFormat == "multimd");
-                                        if (selection !== null) {
-                                            const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
-                                            const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
-                                            if (formattedTable)
-                                                cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
-                                            colIndex = selection.column;
-                                        }
-                                    } catch (err) {
-                                        console.error(`Couldn't format table on TAB: ${err}`);
-                                    }
-                                }
-
-                                let col = getColumnRanges(cm.getLine(cursor.line), cursor, colIndex);
-                                let range;
-                                // Does next cell exist in row?
-                                if (col.nextRange) {
-                                    // then select that cell:
-                                    range = col.nextRange;
-                                } else {
-                                    // if not, first select to the current cell:
-                                    range = col.currentRange;
-                                    // skip separator row:
-                                    let i = cm.getLine(cursor.line + 1).match(separatorRegex) ? 2 : 1;
-                                    // then check, if next row exist and select the first cell in the next row:
-                                    if (cm.getLine(cursor.line + i).includes("|")) {
-                                        col = getColumnRanges(cm.getLine(cursor.line + i), createPosition(cursor.line + i, 0));
-                                        if (col.ranges.length > 0)
-                                            range = col.firstRange;
-                                    }
-                                }
-
-                                if (range) {
-                                    cm.focus();
-                                    switch (settings.tabBehavior) {
-                                        case "jumpToStart":
-                                            cm.setCursor(range.from);
-                                            break;
-                                        case "jumpToEnd":
-                                            cm.setCursor(range.to);
-                                            break;
-                                        case "selectContent":
-                                            cm.setSelection(range.from, range.to);
-                                            break;
-                                    }
-                                    cm.refresh(); // This is required for the cursor to actually be visible
-                                }
-                            },
-                            // Jump to previous cell:
-                            "Shift-Tab": (cm) => {
-                                if (settings.tabBehavior == "disabled") {
-                                    cm.replaceSelection('\t');
-                                    return;
-                                }
-
-                                let colIndex = -1;
-                                if (settings.formatOnTab) {
-                                    try {
-                                        const selection = getRangeOfTable(cm, settings.selectedFormat == "multimd");
-                                        if (selection !== null) {
-                                            const parsedTable = getMarkdownParser(settings.selectedFormat).parse(cm.getRange(selection.range.from, selection.range.to));
-                                            const formattedTable = getMarkdownRenderer(settings.selectedFormat, true).render(parsedTable);
-                                            if (formattedTable)
-                                                cm.replaceRange(formattedTable, selection.range.from, selection.range.to);
-                                            colIndex = selection.column;
-                                        }
-                                    } catch (err) {
-                                        console.error(`Couldn't format table on TAB: ${err}`);
-                                    }
-                                }
-
-                                let col = getColumnRanges(cm.getLine(cursor.line), cursor, colIndex);
-                                let range;
-                                // Does previous cell exist in row?
-                                if (col.previousRange) {
-                                    // then select that cell:
-                                    range = col.previousRange;
-                                } else {
-                                    // if not, first select to the current cell:
-                                    range = col.currentRange;
-                                    // skip separator row:
-                                    let i = cm.getLine(cursor.line - 1).match(separatorRegex) ? 2 : 1;
-                                    // then check, if previous row exist and select the last cell in the previous row:
-                                    if (cm.getLine(cursor.line - i).includes("|")) {
-                                        col = getColumnRanges(cm.getLine(cursor.line - i), createPosition(cursor.line - i, 0));
-                                        if (col.ranges.length > 0)
-                                            range = col.lastRange;
-                                    }
-                                }
-
-                                if (range) {
-                                    cm.focus();
-                                    switch (settings.tabBehavior) {
-                                        case "jumpToStart":
-                                            cm.setCursor(range.from);
-                                            break;
-                                        case "jumpToEnd":
-                                            cm.setCursor(range.to);
-                                            break;
-                                        case "selectContent":
-                                            cm.setSelection(range.from, range.to);
-                                            break;
-                                    }
-                                    cm.refresh(); // This is required for the cursor to actually be visible
-                                }
+                            if (insideTable && settings.allowHotkeys) {
+                                command(cm);
+                                return true;
                             }
-                        });
-                    } else {
-                        // Disable the extraKeys when the cursor is not in the table:
-                        cm.setOption("extraKeys", {});
-                    }
-                });
+                            return false;
+                        },
+                    }));
+                    editorControl.addExtension([
+                        // High precedence: Override the default keybindings
+                        Prec.high(keymap.of(keybindings))
+                    ]);
+                } else {
+                    cm.on('cursorActivity', async () => {
+                        var insideTable = isCursorInTable(cm, settings.selectedFormat == "multimd");
+
+                        // if the cursor is in the table and hotkeys are allowed:
+                        if (insideTable && settings.allowHotkeys) {
+                            cm.setOption("extraKeys", keyCommands);
+                        } else {
+                            // Disable the extraKeys when the cursor is not in the table:
+                            cm.setOption("extraKeys", {});
+                        }
+                    });
+                }
             });
         }
 
