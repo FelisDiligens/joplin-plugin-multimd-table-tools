@@ -1,6 +1,7 @@
 import { Editor, Position } from 'codemirror';
 
-const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
+// https://javascript.info/regexp-catastrophic-backtracking
+const separatorRegex = /^\|?([\s\.]*:?(?=([\-=\.]+))\2:?[\s\.]*\|?)+\+?$/;
 const captionRegex = /^(\[.+\]){1,2}$/;
 
 interface Range {
