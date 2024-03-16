@@ -1,8 +1,8 @@
 import { Editor, Position } from 'codemirror';
 
 // https://javascript.info/regexp-catastrophic-backtracking
-const separatorRegex = /^\|?([\s\.]*:?(?=([\-=\.]+))\2:?[\s\.]*\|?)+\+?$/;
-const captionRegex = /^(\[.+\]){1,2}$/;
+export const separatorRegex = /^\|?([\s\.]*:?(?=([\-=\.]+))\2:?[\s\.]*\|?)+\+?$/;
+export const captionRegex = /^(\[.+\]){1,2}$/;
 
 interface Range {
     from: Position,

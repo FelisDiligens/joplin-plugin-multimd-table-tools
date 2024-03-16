@@ -1,7 +1,5 @@
-import { getRangeOfTable, getColumnRanges, createPosition } from "./cmUtils";
 import { getMarkdownParser, getMarkdownRenderer } from "../tableUtils";
-
-const separatorRegex = /^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/;
+import { createPosition, getColumnRanges, getRangeOfTable, separatorRegex } from "./cmUtils";
 
 type KeyCommand = (cm: any)=>void;
 
