@@ -134,7 +134,7 @@ export function parseTable(table: string, format: string): Table {
     if (table.match(/<\s*[tT][aA][bB][lL][eE].*\s*>/) && table.match(/<\/\s*[tT][aA][bB][lL][eE]\s*>/))
         return htmlParser.parse(table);
     // Markdown separator row found?
-    else if (table.match(/^\|?([\s\.]*:?[\-=\.]+[:\+]?[\s\.]*\|?)+\|?$/m))
+    else if (table.match(/^\|?([\s\.]*:?(?=([\-=\.]+))\2[:\+]?[\s\.]*\|?)+\|?$/m))
         return getMarkdownParser(format).parse(table);
     // At least one comma found?
     else if (table.match(/(.*,)+.*/))
