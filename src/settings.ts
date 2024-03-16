@@ -10,6 +10,7 @@ export async function getSettings() {
 		"useNativeDialogs": await joplin.settings.value('tableToolsDebugUseNativeDialogs'),
 		"allowAddToToolbar": await joplin.settings.value('tableToolsAddButtonsToToolbar'),
 		"allowAddToContextMenu": await joplin.settings.value('tableToolsAddCommandsToContextMenu'),
+		"allowAccelerators": await joplin.settings.value('tableToolsAllowAccelerators'),
 		"allowHotkeys": await joplin.settings.value('tableToolsAllowHotkeys'),
 		"tabBehavior": await joplin.settings.value('tableToolsTabBehavior'),
 		"formatOnTab": await joplin.settings.value('tableToolsFormatOnTab'),
@@ -55,7 +56,7 @@ export async function registerAllSettings() {
 			section: section,
 			type: SettingItemType.Bool,
 			value: true,
-			label: 'Add options to contextmenu',
+			label: 'Add options to context menu',
 		},
 		['tableToolsAllowHotkeys']: {
 			public: true,
@@ -63,6 +64,15 @@ export async function registerAllSettings() {
 			type: SettingItemType.Bool,
 			value: true,
 			label: 'Enable hotkeys',
+			description: 'Hotkeys in the code editor (Tab, Shift+Tab, Enter)',
+		},
+		['tableToolsAllowAccelerators']: {
+			public: true,
+			section: section,
+			type: SettingItemType.Bool,
+			value: true,
+			label: 'Enable accelerators',
+			description: 'Hotkeys for menu items (Insert column: Ctrl+Tab, Insert row: Ctrl+Enter, Format table: Ctrl+Shift+F)',
 		},
 		['tableToolsTabBehavior']: { 
 			public: true,

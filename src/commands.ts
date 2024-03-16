@@ -348,42 +348,42 @@ export async function registerAllCommands(settings) {
         [
             ...commands
                .filter(command => command.add.toToolsMenu == "tableTools")
-               .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+               .map(command => command.accelerator !== null && settings.allowAccelerators ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
             {
 				label: 'Format',
 				submenu: commands
                          .filter(command => command.add.toToolsMenu == "tableToolsFormat")
-                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+                         .map(command => command.accelerator !== null && settings.allowAccelerators ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Row',
 				submenu: commands
                          .filter(command => command.add.toToolsMenu == "tableToolsRow")
-                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+                         .map(command => command.accelerator !== null && settings.allowAccelerators ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Column',
 				submenu: commands
                          .filter(command => command.add.toToolsMenu == "tableToolsColumn")
-                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+                         .map(command => command.accelerator !== null && settings.allowAccelerators ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Text',
 				submenu: commands
                          .filter(command => command.add.toToolsMenu == "tableToolsText")
-                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+                         .map(command => command.accelerator !== null && settings.allowAccelerators ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Convert',
 				submenu: commands
                          .filter(command => command.add.toToolsMenu == "tableToolsConvert")
-                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+                         .map(command => command.accelerator !== null && settings.allowAccelerators ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
             {
 				label: 'Paste',
 				submenu: commands
                          .filter(command => command.add.toToolsMenu == "tableToolsPaste")
-                         .map(command => command.accelerator !== null && settings.allowHotkeys ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
+                         .map(command => command.accelerator !== null && settings.allowAccelerators ? ({ commandName: command.name, accelerator: command.accelerator } as MenuItem) : ({ commandName: command.name } as MenuItem)),
 			},
         ],
         MenuItemLocation.Tools);
@@ -410,7 +410,7 @@ export async function registerAllCommands(settings) {
                         return;
 
                     // Add command to context menu:
-                    if (command.accelerator !== null && settings.allowHotkeys) {
+                    if (command.accelerator !== null && settings.allowAccelerators) {
                         newItems.push({
                             label: command.label,
                             commandName: command.name,
